@@ -119,7 +119,9 @@ static inline const char* level_to_str(int level)
 }
 ```
 <br>
+
 再来我们需要制作一个简易的报告函数
+
 ```c
 static inline void logger_message(const char* name, int level, const char* msg, va_list* args)
 {
