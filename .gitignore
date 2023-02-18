@@ -12,6 +12,3 @@ _deps
 build
 .vscode
 *.code-workspace
-
-// lesson-01-logger
-lesson-01-logger/scripts/helpers/logger.c
