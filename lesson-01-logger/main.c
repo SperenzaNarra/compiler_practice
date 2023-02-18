@@ -9,10 +9,5 @@ int main(int argc, char *argv[])
     logger->warning(logger, "%s test\n", "warning");
     logger->error(logger, "%s test\n", "error");
     kill_all_logger();
-
-    if (argc == 1) return 0;
-
-    char* arg = argv[1];
-    printf("%s\n", arg);
     return 0;
 }
