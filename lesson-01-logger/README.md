@@ -54,8 +54,10 @@ typedef void (*LOGGER_MESSAGE_FN)(struct logger* logger, const char* msg, ...);
 这行代表类别 LOGGER_MESSAGE_FN 是一个函数指针
 
 它不会返回任何东西，它需要struct logger指针，一个String数据，以及各种其他变量
+
 <br>
-然后在 struct logger 里面添加四个函数通道
+
+然后在 struct logger 里面添加四个function pointer
 
 ```c
 LOGGER_MESSAGE_FN info;
@@ -70,7 +72,8 @@ LOGGER_MESSAGE_FN error;
 logger->info(logger, "hello world!");
 ```
 <br>
-### 通用函数
+
+## 要完善的项目 (scripts/helpers/logger.c)
 
 struct logger* get_logger(const char* name);
 - 该函数会返回一个struct logger的指针
@@ -84,8 +87,6 @@ void kill_all_logger();
 
 char* display_char(char c);
 - 将一个字符转换成更加易读的文字
-
-<br><br><br>
 
 <br>
 
