@@ -141,7 +141,9 @@ int vfprintf(FILE *stream, const char *format, va_list ap);
 - 针对于 va_list 制作的输出函数，会结合 format 和 ap 中的数据生成格式化数据并将其输出到指定的流文件中。
 
 <br>
+
 然后写出四个通用函数
+
 ```c
 void logger_message_info(struct logger* logger, const char* msg, ...)
 {
@@ -182,6 +184,7 @@ void logger_message_error(struct logger* logger, const char* msg, ...)
 考虑到不同的函数会引用同一个logger，所以我决定让logger以全局变量的形式出现在代码里，这样可能会有内存短缺的风险，但如果要彻底的解决该问题就很花时间，且复杂。所以本系列不会太考虑这种事。
 
 首先我们创建一个两层指针 logger_list 用于存储新生成的 logger，初始大小设定为8；
+
 ```c
 struct logger** logger_list;
 int logger_size = 8;
@@ -191,13 +194,17 @@ struct logger* create_logger(const char* name)
     if (!logger_list) logger_list = calloc(logger_size, sizeof(struct logger*));
     if (!logger_list) return NULL;
 ```
+
 然后寻找最初的空闲空间
+
 ```c
     // find empty
     int end;
     for (end = 0; end < logger_size && logger_list[end]; end++);
 ```
+
 如果已经没有空间了，就加大空间，并将新增的空间设为NULL
+
 ```c
     // if full, doubling the logger_size
     if (logger_size == end)
@@ -214,7 +221,9 @@ struct logger* create_logger(const char* name)
         memset(logger_list+end, 0, (logger_size-end) * sizeof(struct logger*));
     }
 ```
+
 如果一切状态如常，就建立一个新的 logger
+
 ```c
     // setter
     struct logger* logger = malloc(sizeof(struct logger));
@@ -233,9 +242,13 @@ struct logger* create_logger(const char* name)
     return logger;
 }
 ```
+
 <br>
+
 ### get_logger
+
 如果没有 logger 那就创建 logger
+
 ```c
 struct logger* get_logger(const char* name)
 {
@@ -253,8 +266,11 @@ struct logger* get_logger(const char* name)
 ```
 
 <br>
+
 ### kill_logger
+
 删除特定 logger
+
 ```c
 void kill_logger(const char* name)
 {
@@ -274,9 +290,13 @@ void kill_logger(const char* name)
     }
 }
 ```
+
 <br>
+
 ### kill_all_logger
+
 清空 logger
+
 ```c
 void kill_all_logger()
 {
@@ -289,8 +309,11 @@ void kill_all_logger()
     logger_size = 8;
 }
 ```
+
 <br>
+
 ### display_char
+
 > If a switch contains more than five items, it's implemented using a lookup table or a hash list. This means that all items get the same access time, compared to a list of if:s where the last item takes much more time to reach as it has to evaluate every previous condition first.
 
 虽然现在的编译器已经进化到了能够把烂代码优化到神代码，但我几个理由不选择用 if-else
@@ -349,29 +372,11 @@ char* display_char(char c)
     return str;
 }
 ```
+
 <br>
+
 ## 验证
-把 main.c 修改
-```c
-#include <stdio.h>
-#include "helpers/logger.h"
 
-int main(int argc, char *argv[])
-{
-    struct logger* logger = get_logger("main.c");
-    logger->info(logger, "%s test\n", "info");
-    logger->debug(logger, "%s test\n", "debug");
-    logger->warning(logger, "%s test\n", "warning");
-    logger->error(logger, "%s test\n", "error");
-    kill_all_logger();
-
-    if (argc == 1) return 0;
-
-    char* arg = argv[1];
-    printf("%s\n", arg);
-    return 0;
-}
-```
 得到下列结果就是成功
 ```c
               main.c -    INFO - info test
