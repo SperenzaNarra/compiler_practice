@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        logger->error(logger, "Unkown response code %d\n", result);
+        logger->error(logger, "Unknown response code %d\n", result);
     }
 
     kill_all_logger();
