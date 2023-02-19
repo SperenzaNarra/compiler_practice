@@ -1,12 +1,29 @@
 #include <stdio.h>
-#include "token.h"
+#include "compiler.h"
+#include "helpers/logger.h"
 
 int main(int argc, char *argv[])
 {
-    struct Token *token = token_create(&(struct token){
-        .type = TOKEN_TYPE_NUMBER,
-        .inum = 50,
-        .pos = (struct pos){.filename = "main.c"}
-    });
+    if (argc == 1) return 0;
+
+    struct logger* logger = get_logger("main.c");
+
+    char* arg = argv[1];
+    int result = compile_file(arg, NULL, 0);
+    
+    if (result == COMPILER_FILE_COMPILED_OK)
+    {
+        logger->info(logger, "Everything compiled fine\n");
+    }
+    else if (result == COMPILER_FILE_FAILED_WITH_ERRORS)
+    {
+        logger->error(logger, "Compile failed\n");
+    }
+    else
+    {
+        logger->error(logger, "Unkown response code %d\n", result);
+    }
+
+    kill_all_logger();
     return 0;
 }
