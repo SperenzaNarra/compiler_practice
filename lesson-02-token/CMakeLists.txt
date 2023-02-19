@@ -5,4 +5,4 @@ add_executable(${PROJECT_NAME} main.c)
 
 add_subdirectory(scripts)
 include_directories(${CMAKE_SOURCE_DIR}/scripts)
-target_link_libraries(${PROJECT_NAME} helpers)
+target_link_libraries(${PROJECT_NAME} Helpers Compiler)
