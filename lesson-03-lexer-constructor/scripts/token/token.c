@@ -6,7 +6,7 @@
 
 static inline void read_pos(struct pos* pos)
 {
-    struct logger* logger = get_logger("token.c");
+    struct logger* logger = get_logger("token.c", "read_pos");
     logger->debug(logger, "read pos\n");
     logger->debug(logger, "  col  : %d\n", pos->col);
     logger->debug(logger, "  line : %d\n", pos->line);
@@ -15,7 +15,7 @@ static inline void read_pos(struct pos* pos)
 
 static inline void read_token(struct token* token)
 {
-    struct logger* logger = get_logger("token.c");
+    struct logger* logger = get_logger("token.c", "read_token");
     logger->debug(logger, "read token\n");
 
     switch (token->type)
@@ -62,7 +62,7 @@ struct token tmp_token;
 
 struct token* token_create(struct token* _token)
 {
-    struct logger* logger = get_logger("token.c");
+    struct logger* logger = get_logger("token.c", "token_create");
     logger->debug(logger, "token_create() is called\n");
 
     memcpy(&tmp_token, _token, sizeof(struct token));

@@ -1,6 +1,9 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#define DEBUG_FUNCTION_CALL
+#define DEBUG_INFO
+
 enum
 {
     LOGGER_MESSAGE_LEVEL_INFO,
@@ -21,7 +24,7 @@ struct logger
     LOGGER_MESSAGE_FN error;
 };
 
-struct logger* get_logger(const char* name);
+struct logger* get_logger(const char* name, const char* fn_name);
 void kill_logger(const char* name);
 void kill_all_logger();
 char* display_char(char c);

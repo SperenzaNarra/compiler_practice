@@ -1,6 +1,6 @@
 #include "logger.h"
 
-struct logger* get_logger(const char* name)
+struct logger* get_logger(const char* name, const char* fn_name)
 {
 
 }

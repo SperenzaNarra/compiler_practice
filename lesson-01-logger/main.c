@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    struct logger* logger = get_logger("main.c");
+    struct logger* logger = get_logger("main.c", "main");
     logger->info(logger, "%s test\n", "info");
     logger->debug(logger, "%s test\n", "debug");
     logger->warning(logger, "%s test\n", "warning");
