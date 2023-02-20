@@ -9,11 +9,11 @@ int compile_file(const char* filename, const char* out_filename, int flags)
     struct logger* logger = get_logger("compiler.c");
     logger->debug(logger, "compile_file() is called\n");
 
-    // TODO: build an compile process
+    // build an compile process
     struct compile_process* process = compile_process_create(filename, out_filename, flags);
     if (!process) return COMPILER_FILE_FAILED_WITH_ERRORS;
 
-    // TODO: Perform Lexical Analysis
+    // Perform Lexical Analysis
     struct lex_process *lex_process = lex_process_create(process, NULL);
     if (!lex_process) 
     {

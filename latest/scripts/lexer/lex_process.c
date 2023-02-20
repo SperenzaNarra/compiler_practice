@@ -19,7 +19,7 @@ char lex_process_next_char(struct lex_process* process)
     }
 
     char* str = display_char(c);
-    logger->debug(logger, "get char %s with line %d col %d\n", str, process->pos.line, process->pos.col);
+    logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
     free(str);
 
     return c;
@@ -35,7 +35,7 @@ char lex_process_peek_char(struct lex_process* process)
     ungetc(c, compiler->cfile.fp);
 
     char* str = display_char(c);
-    logger->debug(logger, "get char %s with line %d col %d\n", str, process->pos.line, process->pos.col);
+    logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
     free(str);
 
     return c;
