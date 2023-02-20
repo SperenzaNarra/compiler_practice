@@ -118,18 +118,36 @@ struct logger* create_logger(const char* name)
     return logger;
 }
 
-struct logger* get_logger(const char* name)
+struct logger* get_logger(const char* name, const char* fn_name)
 {
-    if (!logger_list) return create_logger(name);
-
-    // check history
-    for (int i = 0; i < logger_size && logger_list[i]; i++)
+    struct logger* logger = NULL;
+    if (!logger_list) 
     {
-        if (strcmp(name, logger_list[i]->name) == 0) return logger_list[i];
+        logger = create_logger(name);
+    }
+    else
+    {
+        // check history
+        for (int i = 0; i < logger_size && logger_list[i]; i++)
+        {
+            if (strcmp(name, logger_list[i]->name) == 0) 
+            {
+                logger = logger_list[i];
+                break;
+            }
+        }
+
+        // if not found
+        if (!logger) logger = create_logger(name);
     }
 
-    // if not found
-    return create_logger(name);
+    if (!logger) return NULL;
+
+#ifdef DEBUG_FUNCTION_CALL
+    logger->debug(logger, "%s() is called\n", fn_name);
+#endif
+
+    return logger;
 }
 
 

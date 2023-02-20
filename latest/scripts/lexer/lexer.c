@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "lexer/lex_helper.h"
 
 #include "helpers/logger.h"
 #include "helpers/vector.h"
@@ -21,19 +22,35 @@ void pushc(char c)
 }
 
 
+
+struct pos* lex_process_pos()
+{
+    return &lex_process->pos;
+}
+
+struct token* lexer_last_token()
+{
+    return vector_back_or_null(lex_process->token_vec);
+}
+
+
+
 static struct token* read_next_token()
 {
-    struct logger* logger = get_logger("lexer.c");
-    logger->debug(logger, "read_next_token() is called\n");
+    struct logger* logger = get_logger("lexer.c", "read_next_token");
 
     struct token* token = NULL;
     char c = peekc();
     switch (c)
     {
-    case '0' ... '9':
-        // number case
+    case NUMERIC_CASE:
+        token = token_make_number();
         break;
         
+    case ' ':
+        token = handle_whitespace();
+        break;
+
     case EOF:
         break;
 
@@ -48,10 +65,17 @@ static struct token* read_next_token()
     return token;
 }
 
+struct token* handle_whitespace()
+{
+    struct token* last_token = lexer_last_token();
+    if (last_token) last_token->whitespace = true;
+    nextc();
+    return read_next_token();
+}
+
 int lex(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lexer.c");
-    logger->debug(logger, "lex() is called\n");
+    struct logger* logger = get_logger("lexer.c", "lex");
 
     lex_process = process;
 

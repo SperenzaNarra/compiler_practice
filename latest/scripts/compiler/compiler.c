@@ -6,8 +6,7 @@
 
 int compile_file(const char* filename, const char* out_filename, int flags)
 {
-    struct logger* logger = get_logger("compiler.c");
-    logger->debug(logger, "compile_file() is called\n");
+    struct logger* logger = get_logger("compiler.c", "compile_file");
 
     // build an compile process
     struct compile_process* process = compile_process_create(filename, out_filename, flags);

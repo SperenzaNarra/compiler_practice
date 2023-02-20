@@ -4,8 +4,7 @@
 
 char lex_process_next_char(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lex_process.c");
-    logger->debug(logger, "lex_process_next_char() is called\n");
+    struct logger* logger = get_logger("lex_process.c", "lex_process_next_char");
 
     process->last_pos = process->pos;
     process->pos.col += 1;
@@ -27,8 +26,7 @@ char lex_process_next_char(struct lex_process* process)
 
 char lex_process_peek_char(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lex_process.c");
-    logger->debug(logger, "lex_process_peek_char() is called\n");
+    struct logger* logger = get_logger("lex_process.c", "lex_process_peek_char");
 
     struct compile_process* compiler = process->compiler;
     char c = getc(compiler->cfile.fp);
@@ -43,8 +41,7 @@ char lex_process_peek_char(struct lex_process* process)
 
 void lex_process_push_char(struct lex_process* process, char c)
 {
-    struct logger* logger = get_logger("lex_process.c");
-    logger->debug(logger, "lex_process_push_char() is called\n");
+    struct logger* logger = get_logger("lex_process.c", "lex_process_push_char");
 
     char* str = display_char(c);
     logger->debug(logger, "get char %s\n", str);
@@ -57,8 +54,7 @@ void lex_process_push_char(struct lex_process* process, char c)
 
 struct lex_process* lex_process_create(struct compile_process* compiler, void* private)
 {
-    struct logger* logger = get_logger("lex_process.c");
-    logger->debug(logger, "lex_process_create() is called\n");
+    struct logger* logger = get_logger("lex_process.c", "lex_process_create");
 
     struct lex_process* process = malloc(sizeof(struct lex_process));
     if (!process) return NULL;
@@ -92,8 +88,7 @@ void* lex_process_private(struct lex_process* process)
 
 void lex_process_free(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lex_process.c");
-    logger->debug(logger, "lex_process_free() is called\n");
+    struct logger* logger = get_logger("lex_process.c", "lex_process_free");
 
     if (!process) return;
     vector_free(process->token_vec);
