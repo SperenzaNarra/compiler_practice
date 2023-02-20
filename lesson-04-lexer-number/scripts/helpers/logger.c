@@ -44,12 +44,14 @@ void logger_message_info(struct logger* logger, const char* msg, ...)
 
 void logger_message_debug(struct logger* logger, const char* msg, ...)
 {
+#ifdef DEBUG_INFO
     va_list args;
     va_start(args, msg);
     fprintf(stderr, "%s%20s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
+#endif
 }
 
 void logger_message_warning(struct logger* logger, const char* msg, ...)
