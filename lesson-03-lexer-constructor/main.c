@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     if (argc == 1) return 0;
 
-    struct logger* logger = get_logger("main.c");
+    struct logger* logger = get_logger("main.c", "main");
 
     char* arg = argv[1];
     int result = compile_file(arg, NULL, 0);
