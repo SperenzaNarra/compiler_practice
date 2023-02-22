@@ -33,7 +33,13 @@ struct token* lexer_last_token()
     return vector_back_or_null(lex_process->token_vec);
 }
 
-
+struct token* handle_whitespace()
+{
+    struct token* last_token = lexer_last_token();
+    if (last_token) last_token->whitespace = true;
+    nextc();
+    return read_next_token();
+}
 
 static struct token* read_next_token()
 {
@@ -63,14 +69,6 @@ static struct token* read_next_token()
     }
 
     return token;
-}
-
-struct token* handle_whitespace()
-{
-    struct token* last_token = lexer_last_token();
-    if (last_token) last_token->whitespace = true;
-    nextc();
-    return read_next_token();
 }
 
 int lex(struct lex_process* process)
