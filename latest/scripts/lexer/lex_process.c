@@ -8,19 +8,19 @@ char lex_process_next_char(struct lex_process* process)
 
     struct compile_process* compiler = process->compiler;
     char c = getc(compiler->cfile.fp);
-    if (c == '\n')
-    {
-        process->pos.line += 1;
-        process->pos.col = 1;
-    }
 
     char* str = display_char(c);
     logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
     free(str);
 
-
     process->last_pos = process->pos;
     process->pos.col += 1;
+
+    if (c == '\n')
+    {
+        process->pos.line += 1;
+        process->pos.col = 1;
+    }
 
     return c;
 }
