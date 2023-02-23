@@ -19,8 +19,6 @@ struct token* lexer_last_token();
     }
 
 
-// lexer.c
-struct token* handle_whitespace();
 
 // lex_number.c
 struct token* token_make_number();
