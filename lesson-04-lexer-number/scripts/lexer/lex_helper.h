@@ -12,10 +12,9 @@ struct pos* lex_process_pos();
 struct token* lexer_last_token();
 
 #define LEX_GETC_IF(buffer, c, exp)     \
-    for (c = peekc(); exp; c = peekc()) \
+    for (c = nextc(); exp; c = nextc()) \
     {                                   \
         buffer_write(buffer, c);        \
-        nextc();                        \
     }
 
 

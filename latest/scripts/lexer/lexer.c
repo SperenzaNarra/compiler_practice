@@ -35,6 +35,8 @@ struct token* lexer_last_token()
 
 struct token* handle_whitespace()
 {
+    struct logger* logger = get_logger("lexer.c", "handle_whitespace");
+
     struct token* last_token = lexer_last_token();
     if (last_token) last_token->whitespace = true;
     nextc();

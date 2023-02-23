@@ -1,8 +1,8 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#define DEBUG_FUNCTION_CALL
-#define DEBUG_INFO
+#define INFO_FUNCTION_CALL
+#define DEBUG
 
 enum
 {

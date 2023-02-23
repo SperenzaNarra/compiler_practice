@@ -6,9 +6,6 @@ char lex_process_next_char(struct lex_process* process)
 {
     struct logger* logger = get_logger("lex_process.c", "lex_process_next_char");
 
-    process->last_pos = process->pos;
-    process->pos.col += 1;
-
     struct compile_process* compiler = process->compiler;
     char c = getc(compiler->cfile.fp);
     if (c == '\n')
@@ -20,6 +17,10 @@ char lex_process_next_char(struct lex_process* process)
     char* str = display_char(c);
     logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
     free(str);
+
+
+    process->last_pos = process->pos;
+    process->pos.col += 1;
 
     return c;
 }

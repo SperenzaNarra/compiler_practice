@@ -7,7 +7,7 @@
 static inline void read_pos(struct pos* pos)
 {
     struct logger* logger = get_logger("token.c", "read_pos");
-    logger->info(logger, "read pos\n");
+    logger->debug(logger, "read pos\n");
     logger->info(logger, "  col  : %d\n", pos->col);
     logger->info(logger, "  line : %d\n", pos->line);
     logger->info(logger, "  filename : %s\n", pos->filename);
@@ -16,7 +16,7 @@ static inline void read_pos(struct pos* pos)
 static inline void read_token(struct token* token)
 {
     struct logger* logger = get_logger("token.c", "read_token");
-    logger->info(logger, "read token\n");
+    logger->debug(logger, "read token\n");
 
     switch (token->type)
     {

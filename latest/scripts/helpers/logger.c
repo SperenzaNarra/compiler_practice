@@ -44,7 +44,7 @@ void logger_message_info(struct logger* logger, const char* msg, ...)
 
 void logger_message_debug(struct logger* logger, const char* msg, ...)
 {
-#ifdef DEBUG_INFO
+#ifdef INFO_FUNCTION_CALL
     va_list args;
     va_start(args, msg);
     fprintf(stderr, "%s%20s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
@@ -145,8 +145,8 @@ struct logger* get_logger(const char* name, const char* fn_name)
 
     if (!logger) return NULL;
 
-#ifdef DEBUG_FUNCTION_CALL
-    logger->debug(logger, "%s() is called\n", fn_name);
+#ifdef INFO_FUNCTION_CALL
+    logger->info(logger, "%s() is called\n", fn_name);
 #endif
 
     return logger;
