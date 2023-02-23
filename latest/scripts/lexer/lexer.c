@@ -41,7 +41,7 @@ struct token* handle_whitespace()
     return read_next_token();
 }
 
-static struct token* read_next_token()
+struct token* read_next_token()
 {
     struct logger* logger = get_logger("lexer.c", "read_next_token");
 

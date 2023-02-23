@@ -31,7 +31,7 @@ struct token* lexer_last_token()
     
 }
 
-struct token* handle_whitespace()
+struct token* read_next_token()
 {
     
 }

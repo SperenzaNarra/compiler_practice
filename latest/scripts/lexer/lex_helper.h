@@ -19,6 +19,9 @@ struct token* lexer_last_token();
     }
 
 
+// lex.c
+struct token* read_next_token();
+
 // lex_number.c
 struct token* token_make_number();
 
