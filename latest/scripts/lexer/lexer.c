@@ -55,10 +55,24 @@ struct token* lexer_last_token()
 
 void lex_new_expression()
 {
+    struct logger* logger = get_logger("lexer.c", "lex_new_expression");
     lex_process->current_expression_count++;
     if (lex_process->current_expression_count == 1)
     {
         lex_process->parenthesis_buffer = buffer_create();
+    }
+}
+
+void lex_finish_expression()
+{
+    struct logger* logger = get_logger("lexer.c", "lex_finish_expression");
+    lex_process->current_expression_count--;
+    if (lex_process->current_expression_count < 0)
+    {
+        logger->error(logger, "You closed an expression that you never open");
+        logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
+        kill_all_logger();
+        exit(-1);
     }
 }
 
@@ -93,6 +107,9 @@ struct token* read_next_token()
         break;
     case OPERATOR_CASE_EXCLUDE_DIVISION:
         token = token_make_operator_or_string();
+        break;
+    case SYMBOL_CASE:
+        token = token_make_symbol();
         break;
     case ' ':
         token = handle_whitespace();

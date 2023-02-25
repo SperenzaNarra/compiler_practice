@@ -25,6 +25,15 @@
     case ',':                           \
     case '.':                           \
     case '?'
+#define SYMBOL_CASE \
+    '{':            \
+    case '}':       \
+    case ':':       \
+    case ';':       \
+    case '#':       \
+    case '\\':      \
+    case ')':       \
+    case ']'
 
 #define LEX_GETC_IF(buffer, c, exp)     \
     for (c = nextc(); exp; c = nextc()) \
@@ -46,6 +55,7 @@ struct vector* lexer_tokens();
 struct token* lexer_last_token();
 
 void lex_new_expression();
+void lex_finish_expression();
 bool lex_is_in_expression();
 
 struct token* read_next_token();
@@ -59,6 +69,9 @@ struct token* token_make_string(char start_delim, char end_delim);
 
 // lex_operator.c
 struct token* token_make_operator_or_string();
+
+// lex_symbol.c
+struct token* token_make_symbol();
 
 
 #endif
