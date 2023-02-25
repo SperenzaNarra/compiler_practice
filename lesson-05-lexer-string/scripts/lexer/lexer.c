@@ -6,6 +6,21 @@
 
 struct lex_process* lex_process;
 
+struct vector* lexer_tokens()
+{
+    return lex_process->token_vec;
+}
+
+void char_not_found_error(struct logger* logger, struct pos pos, char c)
+{
+    char* str = display_char(c);
+    logger->error(logger, "cannot read end delimiter %s\n", str);
+    logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
+    free(str);
+    kill_all_logger();
+    exit(-1);
+}
+
 char nextc()
 {
     return lex_process->next_char(lex_process);
@@ -33,6 +48,8 @@ struct token* lexer_last_token()
     return vector_back_or_null(lex_process->token_vec);
 }
 
+
+
 struct token* handle_whitespace()
 {
     struct logger* logger = get_logger("lexer.c", "handle_whitespace");
@@ -54,7 +71,9 @@ struct token* read_next_token()
     case NUMERIC_CASE:
         token = token_make_number();
         break;
-        
+    case STRING_CASE:
+        token = token_make_string(c, c);
+        break;
     case ' ':
         token = handle_whitespace();
         break;
@@ -67,6 +86,7 @@ struct token* read_next_token()
         logger->error(logger, "get unknown char %s\n", str);
         logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
         free(str);
+        kill_all_logger();
         exit(-1);
     }
 
