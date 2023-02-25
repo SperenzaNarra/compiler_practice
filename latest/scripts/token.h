@@ -39,4 +39,5 @@ struct token
 };
 
 struct token* token_create(struct token* _token);
+bool token_is_keyword(struct token* token, const char* keyword);
 #endif // TOKEN_H

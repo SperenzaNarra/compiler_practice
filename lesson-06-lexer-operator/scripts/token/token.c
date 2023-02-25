@@ -3,6 +3,10 @@
 #include <string.h>
 #include "helpers/logger.h"
 
+bool token_is_keyword(struct token* token, const char* keyword)
+{
+    return token->type == TOKEN_TYPE_KEYWORD && (strcmp(token->sval, keyword) == 0);
+}
 
 static inline void read_pos(struct pos* pos)
 {

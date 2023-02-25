@@ -43,12 +43,29 @@ struct pos* lex_process_pos()
     return &lex_process->pos;
 }
 
+void lex_process_set_pos(struct pos* pos)
+{
+    lex_process->pos = *pos;
+}
+
 struct token* lexer_last_token()
 {
     return vector_back_or_null(lex_process->token_vec);
 }
 
+void lex_new_expression()
+{
+    lex_process->current_expression_count++;
+    if (lex_process->current_expression_count == 1)
+    {
+        lex_process->parenthesis_buffer = buffer_create();
+    }
+}
 
+bool lex_is_in_expression()
+{
+    return lex_process->current_expression_count > 0;
+}
 
 struct token* handle_whitespace()
 {
@@ -73,6 +90,9 @@ struct token* read_next_token()
         break;
     case STRING_CASE:
         token = token_make_string(c, c);
+        break;
+    case OPERATOR_CASE_EXCLUDE_DIVISION:
+        token = token_make_operator_or_string();
         break;
     case ' ':
         token = handle_whitespace();

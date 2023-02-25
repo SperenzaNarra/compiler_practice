@@ -37,7 +37,7 @@ void logger_message_info(struct logger* logger, const char* msg, ...)
 {
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%20s - %7s - ", logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_INFO));
+    fprintf(stderr, "%30s - %7s - ", logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_INFO));
     vfprintf(stderr, msg, args);
     va_end(args);
 }
@@ -47,7 +47,7 @@ void logger_message_debug(struct logger* logger, const char* msg, ...)
 #ifdef INFO_FUNCTION_CALL
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%20s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
+    fprintf(stderr, "%s%30s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
@@ -58,7 +58,7 @@ void logger_message_warning(struct logger* logger, const char* msg, ...)
 {
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%20s - %7s - ", YELLOW, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_WARNING));
+    fprintf(stderr, "%s%30s - %7s - ", YELLOW, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_WARNING));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
@@ -68,7 +68,7 @@ void logger_message_error(struct logger* logger, const char* msg, ...)
 {
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%20s - %7s - ", RED, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_ERROR));
+    fprintf(stderr, "%s%30s - %7s - ", RED, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_ERROR));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
