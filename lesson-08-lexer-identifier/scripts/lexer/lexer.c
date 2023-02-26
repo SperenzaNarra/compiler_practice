@@ -1,6 +1,8 @@
 #include "lexer.h"
 #include "lexer/lex_helper.h"
 
+#include <ctype.h>
+
 #include "helpers/logger.h"
 #include "helpers/vector.h"
 
@@ -91,6 +93,15 @@ struct token* handle_whitespace()
     return read_next_token();
 }
 
+struct token* read_special_token()
+{
+    struct logger* logger = get_logger("lexer.c", "read_special_token");
+    char c = peekc();
+
+    if (isalpha(c) || c == '_') return token_make_identifier_or_keyword();
+    return NULL;
+}
+
 struct token* read_next_token()
 {
     struct logger* logger = get_logger("lexer.c", "read_next_token");
@@ -119,12 +130,16 @@ struct token* read_next_token()
         break;
 
     default:;
-        char* str = display_char(c);
-        logger->error(logger, "get unknown char %s\n", str);
-        logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
-        free(str);
-        kill_all_logger();
-        exit(-1);
+        token = read_special_token();
+        if (!token)
+        {
+            char* str = display_char(c);
+            logger->error(logger, "get unknown char %s\n", str);
+            logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
+            free(str);
+            kill_all_logger();
+            exit(-1);
+        }
     }
 
     return token;

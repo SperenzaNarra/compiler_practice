@@ -73,5 +73,8 @@ struct token* token_make_operator_or_string();
 // lex_symbol.c
 struct token* token_make_symbol();
 
+// lex_identifier.c
+struct token* token_make_identifier_or_keyword();
+
 
 #endif
