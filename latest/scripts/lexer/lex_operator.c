@@ -133,10 +133,7 @@ static const char* read_operator()
     }
     else if(!op_valid(ptr))
     {
-        logger->error(logger, "The operator %s is not valid\n", ptr);
-        logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
-        buffer_free(buffer);
-        exit(-1);
+        lex_error(logger, pos, "The operator %s is not valid\n", ptr);
     }
     
     char* str = strdup(ptr);

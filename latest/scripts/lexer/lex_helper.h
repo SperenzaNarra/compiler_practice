@@ -1,6 +1,9 @@
 #ifndef LEX_HELPER_H
 #define LEX_HELPER_H
 
+#include <stdbool.h>
+
+#include "pos.h"
 #include "helpers/logger.h"
 
 #define NUMERIC_CASE \
@@ -44,6 +47,9 @@
 
 
 // lex.c
+struct lex_process* lex_process;
+void lex_error(struct logger* logger, struct pos pos, const char* msg, ...);
+
 char nextc();
 char peekc();
 void pushc(char c);
@@ -59,7 +65,6 @@ void lex_finish_expression();
 bool lex_is_in_expression();
 
 struct token* read_next_token();
-void char_not_found_error(struct logger* logger, struct pos pos, char c);
 
 // lex_number.c
 struct token* token_make_number();

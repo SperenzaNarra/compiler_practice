@@ -1,26 +1,30 @@
 #include "lexer.h"
 #include "lexer/lex_helper.h"
 
+#include <stdarg.h>
 #include <ctype.h>
 
 #include "helpers/logger.h"
 #include "helpers/vector.h"
 
-struct lex_process* lex_process;
+void lex_error(struct logger* logger, struct pos pos, const char* msg, ...)
+{
+    char buffer[128];
+
+    va_list args;
+    va_start(args, msg);
+    vsprintf(buffer, msg, args);
+    logger->error(logger, "%s", buffer);
+    va_end(args);
+
+    logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
+    kill_all_logger();
+    exit(-1);
+}
 
 struct vector* lexer_tokens()
 {
     return lex_process->token_vec;
-}
-
-void char_not_found_error(struct logger* logger, struct pos pos, char c)
-{
-    char* str = display_char(c);
-    logger->error(logger, "cannot read end delimiter %s\n", str);
-    logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
-    free(str);
-    kill_all_logger();
-    exit(-1);
 }
 
 char nextc()
@@ -71,10 +75,7 @@ void lex_finish_expression()
     lex_process->current_expression_count--;
     if (lex_process->current_expression_count < 0)
     {
-        logger->error(logger, "You closed an expression that you never open");
-        logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
-        kill_all_logger();
-        exit(-1);
+        lex_error(logger, lex_process->pos, "You closed an expression that you never open\n");
     }
 }
 
@@ -133,12 +134,7 @@ struct token* read_next_token()
         token = read_special_token();
         if (!token)
         {
-            char* str = display_char(c);
-            logger->error(logger, "get unknown char %s\n", str);
-            logger->error(logger, "on line %d col %d in file %s\n", lex_process->pos.col, lex_process->pos.line, lex_process->pos.filename);
-            free(str);
-            kill_all_logger();
-            exit(-1);
+            lex_error(logger, lex_process->pos, "get unknown char %s\n", display_char(c));
         }
     }
 
