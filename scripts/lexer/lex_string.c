@@ -25,7 +25,6 @@ struct token* token_make_string(char start_delim, char end_delim)
         if (c == EOF)
         {
             buffer_free(buffer);
-            vector_free(lexer_tokens());
             lex_error(logger, pos, "cannot read end delimiter %s\n", display_char(end_delim));
         }
 

@@ -18,8 +18,6 @@ void lex_error(struct logger* logger, struct pos pos, const char* msg, ...)
     va_end(args);
 
     logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
-    lex_process_free(lex_process);
-    kill_all_logger();
     exit(-1);
 }
 
