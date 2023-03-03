@@ -27,6 +27,14 @@ struct token* token_make_identifier_or_keyword()
     buffer_free(buffer);
 
     // check if this is a keyword
+    if (is_keyword(str))
+    {
+        return token_create(&(struct token){
+            .type = TOKEN_TYPE_KEYWORD,
+            .sval = str,
+            .pos = pos
+        });
+    }
 
     // otherwise
     return token_create(&(struct token){

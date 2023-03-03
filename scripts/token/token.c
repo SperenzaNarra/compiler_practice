@@ -53,7 +53,7 @@ static inline void read_token(struct token* token)
         logger->info(logger, "  value : %s\n", token->sval);
         break;
     case TOKEN_TYPE_NEWLINE:
-        logger->info(logger, "  type  : new line");
+        logger->info(logger, "  type  : new line\n");
         break;
     };
     logger->info(logger, "  whitespace : %s\n", token->whitespace ? "true" : "false");

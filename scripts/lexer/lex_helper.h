@@ -82,5 +82,6 @@ struct token* token_make_symbol();
 // lex_identifier.c
 struct token* token_make_identifier_or_keyword();
 
-
+// lex_keyword.c
+bool is_keyword(const char* str);
 #endif

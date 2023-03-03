@@ -102,6 +102,13 @@ struct token* read_special_token()
     return NULL;
 }
 
+struct token* token_make_newline()
+{
+    struct pos pos = *lex_process_pos();
+    nextc();
+    return token_create(&(struct token){.type=TOKEN_TYPE_NEWLINE, .pos=pos});
+}
+
 struct token* read_next_token()
 {
     struct logger* logger = get_logger("lexer.c", "read_next_token");
@@ -121,6 +128,9 @@ struct token* read_next_token()
         break;
     case SYMBOL_CASE:
         token = token_make_symbol();
+        break;
+    case '\n':
+        token = token_make_newline();
         break;
     case ' ':
         token = handle_whitespace();
