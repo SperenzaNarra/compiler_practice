@@ -9,8 +9,11 @@
 
 #define NUMERIC_CASE \
     '0' ... '9'
-#define STRING_CASE \
-    '"'
+#define SPECIAL_NUMBER_CASE \
+    'x':                    \
+    case 'X':               \
+    case 'b':               \
+    case 'B'
 #define OPERATOR_CASE_EXCLUDE_DIVISION  \
     '+':                                \
     case '-':                           \
@@ -61,6 +64,7 @@ void lex_process_set_pos(struct pos* pos);
 
 struct vector* lexer_tokens();
 struct token* lexer_last_token();
+void lexer_pop_token();
 
 void lex_new_expression();
 void lex_finish_expression();
@@ -70,6 +74,8 @@ struct token* read_next_token();
 
 // lex_number.c
 struct token* token_make_number();
+struct token* token_make_quote();
+struct token* token_make_special_number();
 
 // lex_string.c
 struct token* token_make_string(char start_delim, char end_delim);

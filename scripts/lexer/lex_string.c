@@ -30,7 +30,7 @@ struct token* token_make_string(char start_delim, char end_delim)
 
         if (c == '\\')
         {
-            // cases like \n
+            // scape cases like \n
             continue;
         }
 

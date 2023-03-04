@@ -58,6 +58,11 @@ struct token* lexer_last_token()
     return vector_back_or_null(lex_process->token_vec);
 }
 
+void lexer_pop_token()
+{
+    vector_pop(lex_process->token_vec);
+}
+
 void lex_new_expression()
 {
     struct logger* logger = get_logger("lexer.c", "lex_new_expression");
@@ -120,8 +125,11 @@ struct token* read_next_token()
     case NUMERIC_CASE:
         token = token_make_number();
         break;
-    case STRING_CASE:
+    case '"':
         token = token_make_string(c, c);
+        break;
+    case '\'':
+        token = token_make_quote();
         break;
     case OPERATOR_CASE_EXCLUDE_DIVISION:
         token = token_make_operator_or_string();
@@ -131,6 +139,9 @@ struct token* read_next_token()
         break;
     case '/':
         token = token_make_comment();
+        break;
+    case SPECIAL_NUMBER_CASE:
+        token = token_make_special_number();
         break;
     case '\n':
         token = token_make_newline();
@@ -142,7 +153,7 @@ struct token* read_next_token()
     case EOF:
         break;
 
-    default:;
+    default:
         token = read_special_token();
         if (!token)
         {
