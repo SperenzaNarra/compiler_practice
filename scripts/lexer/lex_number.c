@@ -5,7 +5,7 @@
 
 #include "helpers/logger.h"
 
-static inline char* read_number_str()
+static char* read_number_str()
 {
     struct logger* logger = get_logger("lex_number", "read_number_str");
     struct buffer* buffer = buffer_create();
