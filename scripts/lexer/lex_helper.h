@@ -2,6 +2,7 @@
 #define LEX_HELPER_H
 
 #include <stdbool.h>
+#include <string.h>
 
 #include "pos.h"
 #include "helpers/logger.h"
@@ -84,4 +85,7 @@ struct token* token_make_identifier_or_keyword();
 
 // lex_keyword.c
 bool is_keyword(const char* str);
+
+// lex_comment.c
+struct token* token_make_comment();
 #endif

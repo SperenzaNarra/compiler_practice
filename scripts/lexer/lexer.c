@@ -129,6 +129,9 @@ struct token* read_next_token()
     case SYMBOL_CASE:
         token = token_make_symbol();
         break;
+    case '/':
+        token = token_make_comment();
+        break;
     case '\n':
         token = token_make_newline();
         break;
