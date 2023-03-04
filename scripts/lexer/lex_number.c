@@ -18,7 +18,7 @@ static inline char* read_number_str()
     return str;
 }
 
-static inline unsigned long long read_number()
+static unsigned long long read_number()
 {
     struct logger* logger = get_logger("lex_number", "read_number");
     
@@ -40,7 +40,7 @@ struct token* token_make_number()
     });
 }
 
-static inline char lex_get_escaped_char(char c)
+static char lex_get_escaped_char(char c)
 {
     struct logger* logger = get_logger("lex_number", "lex_get_escaped_char");
     char out;
