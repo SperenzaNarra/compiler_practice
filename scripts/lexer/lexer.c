@@ -28,7 +28,21 @@ struct vector* lexer_tokens()
 
 char nextc()
 {
+    struct logger* logger = get_logger("lexer.c", "nextc");
+    
     char c = lex_process->next_char(lex_process);
+    char* str = display_char(c);
+    logger->debug(logger, "get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
+    free(str);
+
+    lex_process->last_pos = lex_process->pos;
+    lex_process->pos.col += 1;
+
+    if (c == '\n')
+    {
+        lex_process->pos.line += 1;
+        lex_process->pos.col = 1;
+    }
 
     if (lex_is_in_expression())
     {
@@ -40,11 +54,24 @@ char nextc()
 
 char peekc()
 {
-    return lex_process->peek_char(lex_process);
+    struct logger* logger = get_logger("lexer.c", "peekc");
+
+    char c = lex_process->peek_char(lex_process);
+    char* str = display_char(c);
+    logger->debug(logger, "get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
+    free(str);
+
+    return c;
 }
 
 void pushc(char c)
 {
+    struct logger* logger = get_logger("lexer.c", "pushc");
+
+    char* str = display_char(c);
+    logger->debug(logger, "get char %s\n", str);
+    free(str);
+
     if (lex_is_in_expression())
     {
         struct buffer* buffer = lex_process->parenthesis_buffer;
@@ -55,24 +82,9 @@ void pushc(char c)
         }
     }
     lex_process->push_char(lex_process, c);
+    lex_process->pos = lex_process->last_pos;
 }
 
-
-
-struct pos* lex_process_pos()
-{
-    return &lex_process->pos;
-}
-
-void lex_process_set_pos(struct pos* pos)
-{
-    lex_process->pos = *pos;
-}
-
-struct token* lexer_last_token()
-{
-    return vector_back_or_null(lex_process->token_vec);
-}
 
 void lexer_pop_token()
 {

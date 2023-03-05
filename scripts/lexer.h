@@ -19,6 +19,13 @@ typedef char (*LEX_PROCESS_NEXT_CHAR)(struct lex_process* process);
 typedef char (*LEX_PROCESS_PEEK_CHAR)(struct lex_process* process);
 typedef void (*LEX_PROCESS_PUSH_CHAR)(struct lex_process* process, char c);
 
+struct lex_process_functions
+{
+    LEX_PROCESS_NEXT_CHAR next_char;
+    LEX_PROCESS_PEEK_CHAR peek_char;
+    LEX_PROCESS_PUSH_CHAR push_char;
+};
+
 struct lex_process
 {
     struct pos pos;
@@ -38,18 +45,19 @@ struct lex_process
     void* private;
 };
 
-struct lex_process* lex_process;
 
 // lexer.c
 int lex(struct lex_process* process);
-void lex_new_expression();
-void lex_finish_expression();
+char nextc();
+char peekc();
+void pushc(char c);
 bool lex_is_in_expression();
 
 // lex_process.c
-struct lex_process* lex_process_create(struct compile_process* compiler, void* private);
-struct vector* lex_process_tokens(struct lex_process* process);
-void* lex_process_private(struct lex_process* process);
-void lex_process_free(struct lex_process* process);
+struct lex_process* lex_process_create(struct compile_process* compiler, struct lex_process_functions* functions, void* private);
+struct buffer* lex_parenthesis_buffer();
+
+// lex_for_string.c
+struct lex_process* token_build_for_string(struct compile_process* compiler, const char* str);
 
 #endif // LEXER_H

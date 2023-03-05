@@ -4,6 +4,38 @@
 
 #include "helpers/logger.h"
 
+
+char lex_process_next_char(struct lex_process* process)
+{
+    struct compile_process* compiler = process->compiler;
+    char c = getc(compiler->cfile.fp);
+
+    return c;
+}
+
+char lex_process_peek_char(struct lex_process* process)
+{
+    struct compile_process* compiler = process->compiler;
+    char c = getc(compiler->cfile.fp);
+    ungetc(c, compiler->cfile.fp);
+
+    return c;
+}
+
+void lex_process_push_char(struct lex_process* process, char c)
+{
+    struct compile_process* compiler = process->compiler;
+    ungetc(c, compiler->cfile.fp);
+}
+
+
+struct lex_process_functions compiler_lex_functions = (struct lex_process_functions)
+{
+    .next_char = lex_process_next_char,
+    .peek_char = lex_process_peek_char,
+    .push_char = lex_process_push_char
+};
+
 int compile_file(const char* filename, const char* out_filename, int flags)
 {
     struct logger* logger = get_logger("compiler.c", "compile_file");
@@ -13,7 +45,9 @@ int compile_file(const char* filename, const char* out_filename, int flags)
     if (!process) return COMPILER_FILE_FAILED_WITH_ERRORS;
 
     // Perform Lexical Analysis
-    struct lex_process *lex_process = lex_process_create(process, NULL);
+    
+    
+    struct lex_process *lex_process = lex_process_create(process, &compiler_lex_functions, NULL);
     if (!lex_process) 
     {
         compile_process_free(process);

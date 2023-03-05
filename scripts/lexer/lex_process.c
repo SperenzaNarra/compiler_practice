@@ -1,59 +1,9 @@
 #include "lexer.h"
+#include "lexer/lex_helper.h"
 
 #include "helpers/logger.h"
 
-char lex_process_next_char(struct lex_process* process)
-{
-    struct logger* logger = get_logger("lex_process.c", "lex_process_next_char");
-
-    struct compile_process* compiler = process->compiler;
-    char c = getc(compiler->cfile.fp);
-
-    char* str = display_char(c);
-    logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
-    free(str);
-
-    process->last_pos = process->pos;
-    process->pos.col += 1;
-
-    if (c == '\n')
-    {
-        process->pos.line += 1;
-        process->pos.col = 1;
-    }
-
-    return c;
-}
-
-char lex_process_peek_char(struct lex_process* process)
-{
-    struct logger* logger = get_logger("lex_process.c", "lex_process_peek_char");
-
-    struct compile_process* compiler = process->compiler;
-    char c = getc(compiler->cfile.fp);
-    ungetc(c, compiler->cfile.fp);
-
-    char* str = display_char(c);
-    logger->debug(logger, "get char %s (line %d col %d)\n", str, process->pos.line, process->pos.col);
-    free(str);
-
-    return c;
-}
-
-void lex_process_push_char(struct lex_process* process, char c)
-{
-    struct logger* logger = get_logger("lex_process.c", "lex_process_push_char");
-
-    char* str = display_char(c);
-    logger->debug(logger, "get char %s\n", str);
-    free(str);
-
-    struct compile_process* compiler = process->compiler;
-    process->pos = process->last_pos;
-    ungetc(c, compiler->cfile.fp);
-}
-
-struct lex_process* lex_process_create(struct compile_process* compiler, void* private)
+struct lex_process* lex_process_create(struct compile_process* compiler, struct lex_process_functions* functions, void* private)
 {
     struct logger* logger = get_logger("lex_process.c", "lex_process_create");
 
@@ -67,24 +17,44 @@ struct lex_process* lex_process_create(struct compile_process* compiler, void* p
         .compiler = compiler,
         .private = private,
 
-        .next_char = lex_process_next_char,
-        .peek_char = lex_process_peek_char,
-        .push_char = lex_process_push_char
+        .next_char = functions->next_char,
+        .peek_char = functions->peek_char,
+        .push_char = functions->push_char
     };
 
     return process;
 }
 
 
-struct vector* lex_process_tokens(struct lex_process* process)
+struct vector* lex_process_tokens()
 {
-    return process->token_vec;
+    return lex_process->token_vec;
 }
 
 
-void* lex_process_private(struct lex_process* process)
+void* lex_process_private()
 {
-    return process->private;
+    return lex_process->private;
+}
+
+struct pos* lex_process_pos()
+{
+    return &lex_process->pos;
+}
+
+void lex_process_set_pos(struct pos* pos)
+{
+    lex_process->pos = *pos;
+}
+
+struct token* lexer_last_token()
+{
+    return vector_back_or_null(lex_process->token_vec);
+}
+
+struct buffer* lex_parenthesis_buffer()
+{
+    return lex_process->parenthesis_buffer;
 }
 
 void lex_process_free(struct lex_process* process)
@@ -95,4 +65,3 @@ void lex_process_free(struct lex_process* process)
     vector_free(process->token_vec);
     free(process);
 }
-

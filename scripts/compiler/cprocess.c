@@ -2,7 +2,6 @@
 
 #include "helpers/logger.h"
 
-
 struct compile_process* compile_process_create(const char* filename, const char* out_filename, int flags)
 {
     struct logger* logger = get_logger("cprocess.c", "compile_process_create");

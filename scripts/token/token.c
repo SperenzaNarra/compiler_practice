@@ -73,7 +73,7 @@ struct token* token_create(struct token* _token)
 
     if (lex_is_in_expression())
     {
-        tmp_token.between_brackets = buffer_ptr(lex_process->parenthesis_buffer);
+        tmp_token.between_brackets = buffer_ptr(lex_parenthesis_buffer());
     }
 
     read_token(&tmp_token);
