@@ -68,8 +68,6 @@ struct vector* lex_process_tokens();
 void* lex_process_private();
 struct pos* lex_process_pos();
 void lex_process_set_pos(struct pos* pos);
-void lex_process_free(struct lex_process* process);
-
 struct token* read_next_token();
 
 // lex_number.c

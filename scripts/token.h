@@ -8,6 +8,19 @@
 
 enum
 {
+    NUMBER_TYPE_NORMAL,
+    NUMBER_TYPE_LONG,
+    NUMBER_TYPE_FLOAT,
+    NUMBER_TYPE_DOUBLE,
+};
+
+struct token_number
+{
+    int type;
+};
+
+enum
+{
     TOKEN_TYPE_IDENTIFIER,
     TOKEN_TYPE_KEYWORD,
     TOKEN_TYPE_OPERATOR,
@@ -36,6 +49,8 @@ struct token
     bool whitespace;
     char* between_brackets;
     struct pos pos;
+
+    struct token_number num;
 };
 
 struct token* token_create(struct token* _token);

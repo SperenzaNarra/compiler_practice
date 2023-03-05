@@ -52,6 +52,7 @@ char nextc();
 char peekc();
 void pushc(char c);
 bool lex_is_in_expression();
+void lex_process_free(struct lex_process* process);
 
 // lex_process.c
 struct lex_process* lex_process_create(struct compile_process* compiler, struct lex_process_functions* functions, void* private);

@@ -28,15 +28,36 @@ static unsigned long long read_number()
     return num;
 }
 
+int lexer_number_type(char c)
+{
+    switch (c)
+    {
+    case 'l':
+    case 'L':
+        return NUMBER_TYPE_LONG;
+    case 'f':
+    case 'F':
+        return NUMBER_TYPE_FLOAT;
+    default:
+        return NUMBER_TYPE_NORMAL;
+    }
+
+}
+
 struct token* token_make_number()
 {
     struct logger* logger = get_logger("lex_number", "token_make_number");
+    unsigned long number = read_number();
+    int number_type = lexer_number_type(peekc());
+
+    if (number_type != NUMBER_TYPE_NORMAL) nextc();
 
     struct pos pos = *lex_process_pos();
     return token_create(&(struct token){
         .type = TOKEN_TYPE_NUMBER,
-        .llnum = read_number(),
-        .pos = pos
+        .llnum = number,
+        .pos = pos,
+        .num = (struct token_number) {.type = number_type}
     });
 }
 

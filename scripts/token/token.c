@@ -10,7 +10,7 @@ bool token_is_keyword(struct token* token, const char* keyword)
     return token->type == TOKEN_TYPE_KEYWORD && (strcmp(token->sval, keyword) == 0);
 }
 
-static inline void read_pos(struct pos* pos)
+static void read_pos(struct pos* pos)
 {
     struct logger* logger = get_logger("token.c", "read_pos");
     logger->debug(logger, "read pos\n");
@@ -19,7 +19,29 @@ static inline void read_pos(struct pos* pos)
     logger->info(logger, "  filename : %s\n", pos->filename);
 }
 
-static inline void read_token(struct token* token)
+static void read_token_number(struct logger* logger, struct token_number* token)
+{
+    switch (token->type)
+    {
+    case NUMBER_TYPE_NORMAL:
+        logger->info(logger, "  type  : normal number\n");
+        break;
+    case NUMBER_TYPE_LONG:
+        logger->info(logger, "  type  : long number\n");
+        break;
+    case NUMBER_TYPE_FLOAT:
+        logger->info(logger, "  type  : float number\n");
+        break;
+    case NUMBER_TYPE_DOUBLE:
+        logger->info(logger, "  type  : double number\n");
+        break;
+    default:
+        logger->info(logger, "  type  : unknown number\n");
+        break;
+    }
+}
+
+static void read_token(struct token* token)
 {
     struct logger* logger = get_logger("token.c", "read_token");
     logger->debug(logger, "read token\n");
@@ -43,7 +65,7 @@ static inline void read_token(struct token* token)
         logger->info(logger, "  value : %c\n", token->cval);
         break;
     case TOKEN_TYPE_NUMBER:
-        logger->info(logger, "  type  : number\n");
+        read_token_number(logger, &token->num);
         logger->info(logger, "  value : %lld\n", token->llnum);
         break;
     case TOKEN_TYPE_STRING:

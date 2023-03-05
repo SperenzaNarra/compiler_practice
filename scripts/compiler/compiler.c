@@ -45,8 +45,6 @@ int compile_file(const char* filename, const char* out_filename, int flags)
     if (!process) return COMPILER_FILE_FAILED_WITH_ERRORS;
 
     // Perform Lexical Analysis
-    
-    
     struct lex_process *lex_process = lex_process_create(process, &compiler_lex_functions, NULL);
     if (!lex_process) 
     {
@@ -60,6 +58,7 @@ int compile_file(const char* filename, const char* out_filename, int flags)
         compile_process_free(process);
         return COMPILER_FILE_FAILED_WITH_ERRORS;
     }
+    process->token_vec = lex_process->token_vec;
 
     // FUTURE: Perform Parsing
 

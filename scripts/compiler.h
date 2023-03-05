@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "helpers/vector.h"
+
 enum
 {
     COMPILER_FILE_COMPILED_OK,
@@ -21,6 +23,8 @@ struct compile_process
     int flags;
     struct file_header cfile;
     FILE* ofile;
+
+    struct vector* token_vec;
 };
 
 // compiler.c
