@@ -34,7 +34,7 @@ struct token
     };
 
     bool whitespace;
-    const char* between_brackets;
+    char* between_brackets;
     struct pos pos;
 };
 

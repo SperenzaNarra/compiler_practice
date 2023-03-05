@@ -28,7 +28,14 @@ struct vector* lexer_tokens()
 
 char nextc()
 {
-    return lex_process->next_char(lex_process);
+    char c = lex_process->next_char(lex_process);
+
+    if (lex_is_in_expression())
+    {
+        buffer_write(lex_process->parenthesis_buffer, c);
+    }
+
+    return c;
 }
 
 char peekc()
@@ -38,6 +45,15 @@ char peekc()
 
 void pushc(char c)
 {
+    if (lex_is_in_expression())
+    {
+        struct buffer* buffer = lex_process->parenthesis_buffer;
+        if (buffer->len > 0)
+        {
+            buffer->data[buffer->len - 1] = 0x00; 
+            buffer->len--;
+        }
+    }
     lex_process->push_char(lex_process, c);
 }
 

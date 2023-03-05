@@ -29,6 +29,7 @@ struct lex_process
     int current_expression_count;
     struct buffer* parenthesis_buffer;
 
+    // lex_process.c
     LEX_PROCESS_NEXT_CHAR next_char;
     LEX_PROCESS_PEEK_CHAR peek_char;
     LEX_PROCESS_PUSH_CHAR push_char;
@@ -37,8 +38,13 @@ struct lex_process
     void* private;
 };
 
+struct lex_process* lex_process;
+
 // lexer.c
 int lex(struct lex_process* process);
+void lex_new_expression();
+void lex_finish_expression();
+bool lex_is_in_expression();
 
 // lex_process.c
 struct lex_process* lex_process_create(struct compile_process* compiler, void* private);

@@ -1,6 +1,8 @@
 #include "token.h"
 
 #include <string.h>
+
+#include "lexer.h"
 #include "helpers/logger.h"
 
 bool token_is_keyword(struct token* token, const char* keyword)
@@ -67,8 +69,13 @@ struct token tmp_token;
 struct token* token_create(struct token* _token)
 {
     struct logger* logger = get_logger("token.c", "token_create");
-
     memcpy(&tmp_token, _token, sizeof(struct token));
+
+    if (lex_is_in_expression())
+    {
+        tmp_token.between_brackets = buffer_ptr(lex_process->parenthesis_buffer);
+    }
+
     read_token(&tmp_token);
 
     return &tmp_token;

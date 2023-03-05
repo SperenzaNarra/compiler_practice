@@ -52,7 +52,6 @@
 #define S_EQ(str1, str2) (str1 && str2 && (strcmp(str1, str2) == 0))
 
 // lex.c
-struct lex_process* lex_process;
 void lex_error(struct logger* logger, struct pos pos, const char* msg, ...);
 
 char nextc();
@@ -65,10 +64,6 @@ void lex_process_set_pos(struct pos* pos);
 struct vector* lexer_tokens();
 struct token* lexer_last_token();
 void lexer_pop_token();
-
-void lex_new_expression();
-void lex_finish_expression();
-bool lex_is_in_expression();
 
 struct token* read_next_token();
 
