@@ -25,6 +25,9 @@ struct compile_process
     FILE* ofile;
 
     struct vector* token_vec;
+    struct vector* node_vec;
+    struct vector* node_tree_vec;
+
 };
 
 // compiler.c

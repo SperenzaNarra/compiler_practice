@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include "pos.h"
 
+// this header is built for lexical analysis
+
 enum
 {
     NUMBER_TYPE_NORMAL,
