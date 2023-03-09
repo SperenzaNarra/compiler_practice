@@ -1,6 +1,7 @@
 #include "compiler.h"
 
 #include "lexer.h"
+#include "parser.h"
 
 #include "helpers/logger.h"
 
@@ -60,7 +61,16 @@ int compile_file(const char* filename, const char* out_filename, int flags)
     }
     process->token_vec = lex_process->token_vec;
 
-    // FUTURE: Perform Parsing
+    // Perform Parsing
+    if (parse(process) != PARSE_ALL_OK)
+    {
+        lex_process_free(lex_process);
+        if (process->node_vec) vector_free(process->node_vec);
+        if (process->node_tree_vec) vector_free(process->node_tree_vec);
+        compile_process_free(process);
+        return COMPILER_FILE_FAILED_WITH_ERRORS;
+    }
+
 
     // FUTURE: Perform Code Generation
 
