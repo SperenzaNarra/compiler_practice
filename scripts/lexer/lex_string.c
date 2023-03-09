@@ -17,7 +17,9 @@ struct token* token_make_string(char start_delim, char end_delim)
     struct buffer* buffer = buffer_create();
     struct pos pos = *lex_process_pos();
 
+#ifdef DEBUG
     assert(nextc() == start_delim);
+#endif
 
     for (char c = nextc(); c != end_delim; c = nextc())
     {

@@ -35,16 +35,18 @@ static inline const char* level_to_str(int level)
 
 void logger_message_info(struct logger* logger, const char* msg, ...)
 {
+#ifdef INFO
     va_list args;
     va_start(args, msg);
     fprintf(stderr, "%30s - %7s - ", logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_INFO));
     vfprintf(stderr, msg, args);
     va_end(args);
+#endif
 }
 
 void logger_message_debug(struct logger* logger, const char* msg, ...)
 {
-#ifdef INFO_FUNCTION_CALL
+#ifdef DEBUG
     va_list args;
     va_start(args, msg);
     fprintf(stderr, "%s%30s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));

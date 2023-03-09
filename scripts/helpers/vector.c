@@ -18,7 +18,9 @@ static bool vector_in_bounds_for_pop(struct vector *vector, int index)
 
 static void vector_assert_bounds_for_pop(struct vector *vector, int index)
 {
+#ifdef DEBUG
     assert(vector_in_bounds_for_pop(vector, index));
+#endif
 }
 
 struct vector *vector_create_no_saves(size_t esize)
@@ -81,9 +83,10 @@ void vector_resize_for_index(struct vector *vector, int start_index, int total_e
         // Nothing to resize
         return;
     }
-
     vector->data = realloc(vector->data, ((start_index + total_elements + VECTOR_ELEMENT_INCREMENT) * vector->esize));
+#ifdef DEBUG
     assert(vector->data);
+#endif
     vector->mindex = start_index + total_elements;
 }
 
@@ -229,7 +232,9 @@ void vector_save_purge(struct vector *vector)
 
 void vector_pop_last_peek(struct vector* vector)
 {
+#ifdef DEBUG
     assert(vector->pindex >= 1);
+#endif
     vector_pop_at(vector, vector->pindex-1);
 }
 

@@ -12,15 +12,18 @@ bool token_is_keyword(struct token* token, const char* keyword)
 
 static void read_pos(struct pos* pos)
 {
+#ifdef INFO_TOKEN
     struct logger* logger = get_logger("token.c", "read_pos");
     logger->debug(logger, "read pos\n");
     logger->info(logger, "  col  : %d\n", pos->col);
     logger->info(logger, "  line : %d\n", pos->line);
     logger->info(logger, "  filename : %s\n", pos->filename);
+#endif
 }
 
 static void read_token_number(struct logger* logger, struct token_number* token)
 {
+#ifdef INFO_TOKEN
     switch (token->type)
     {
     case NUMBER_TYPE_NORMAL:
@@ -39,10 +42,12 @@ static void read_token_number(struct logger* logger, struct token_number* token)
         logger->info(logger, "  type  : unknown number\n");
         break;
     }
+#endif
 }
 
-static void read_token(struct token* token)
+void read_token(struct token* token)
 {
+#ifdef INFO_TOKEN
     struct logger* logger = get_logger("token.c", "read_token");
     logger->debug(logger, "read token\n");
 
@@ -83,6 +88,8 @@ static void read_token(struct token* token)
     logger->info(logger, "  whitespace : %s\n", token->whitespace ? "true" : "false");
     logger->info(logger, "  between_brackets : %s\n", token->between_brackets);
     read_pos(&token->pos);
+    logger->info(logger, "\n");
+#endif
 }
 
 

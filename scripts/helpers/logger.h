@@ -1,9 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#define INFO_FUNCTION_CALL
-#define DEBUG
-
 enum
 {
     LOGGER_MESSAGE_LEVEL_INFO,
