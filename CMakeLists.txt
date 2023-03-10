@@ -25,9 +25,6 @@ if (INFO)
     add_definitions(-DINFO_TOKEN)
 endif()
 
-
-
-
 add_subdirectory(scripts)
 include_directories(${CMAKE_SOURCE_DIR}/scripts)
 target_link_libraries(${PROJECT_NAME} Helpers Compiler)

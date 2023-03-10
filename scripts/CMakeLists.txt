@@ -6,6 +6,13 @@ aux_source_directory(compiler sub_compiler)
 aux_source_directory(lexer    sub_lexer)
 aux_source_directory(parser   sub_parser)
 aux_source_directory(token    sub_token)
+aux_source_directory(node     sub_node)
 
-add_library(Compiler ${sub_compiler} ${sub_lexer} ${sub_token} ${sub_parser})
+add_library(Compiler 
+    ${sub_compiler} 
+    ${sub_lexer} 
+    ${sub_token} 
+    ${sub_parser}
+    ${sub_node}
+)
 target_link_libraries(Compiler Helpers)

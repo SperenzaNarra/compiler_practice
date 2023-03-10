@@ -1,10 +1,27 @@
 #include "parser.h"
 #include "parser/parse_helper.h"
 
+#include <stdarg.h>
+
 #include "compiler.h"
 #include "node.h"
 
 #include "helpers/vector.h"
+#include "helpers/logger.h"
+
+void parse_error(struct logger* logger, struct pos pos, const char* msg, ...)
+{
+    char buffer[128];
+    logger->error(logger, "parse error\n");
+    va_list args;
+    va_start(args, msg);
+    vsprintf(buffer, msg, args);
+    logger->error(logger, "%s", buffer);
+    va_end(args);
+
+    logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
+    exit(-1);
+}
 
 int parse_next()
 {

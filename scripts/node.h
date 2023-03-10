@@ -74,4 +74,7 @@ struct node
     
 };
 
+
+struct node* node_peek();
+
 #endif // NODE_H

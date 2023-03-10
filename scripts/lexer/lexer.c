@@ -10,6 +10,7 @@
 void lex_error(struct logger* logger, struct pos pos, const char* msg, ...)
 {
     char buffer[128];
+    logger->error(logger, "lexical error\n");
 
     va_list args;
     va_start(args, msg);
