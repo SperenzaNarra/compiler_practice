@@ -5,6 +5,8 @@
 
 #include "pos.h"
 
+#include "helpers/vector.h"
+
 enum 
 {
     NODE_TYPE_EXPRESSION,
@@ -74,7 +76,12 @@ struct node
     
 };
 
-
+struct node* node_create(struct node* _node);
+void node_set_vector(struct vector* vec, struct vector* vec_root);
+void node_push(struct node* node);
+struct node* node_peek_or_null();
+struct node* node_peek();
+struct node* node_pop();
 struct node* node_peek();
 
 #endif // NODE_H

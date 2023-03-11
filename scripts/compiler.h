@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "pos.h"
 #include "helpers/vector.h"
 
 enum
@@ -24,10 +25,11 @@ struct compile_process
     struct file_header cfile;
     FILE* ofile;
 
+    struct pos pos;
+
     struct vector* token_vec;
     struct vector* node_vec;
     struct vector* node_tree_vec;
-
 };
 
 // compiler.c
