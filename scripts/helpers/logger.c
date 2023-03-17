@@ -38,7 +38,7 @@ void logger_message_info(struct logger* logger, const char* msg, ...)
 #ifdef INFO
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%30s - %7s - ", logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_INFO));
+    fprintf(stderr, "%20s - %-40s - %-7s - ", logger->name, logger->fn_name, level_to_str(LOGGER_MESSAGE_LEVEL_INFO));
     vfprintf(stderr, msg, args);
     va_end(args);
 #endif
@@ -49,7 +49,7 @@ void logger_message_debug(struct logger* logger, const char* msg, ...)
 #ifdef DEBUG
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%30s - %7s - ", GREEN, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
+    fprintf(stderr, "%s%20s - %-40s - %-7s - ", GREEN, logger->name, logger->fn_name, level_to_str(LOGGER_MESSAGE_LEVEL_DEBUG));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
@@ -60,7 +60,7 @@ void logger_message_warning(struct logger* logger, const char* msg, ...)
 {
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%30s - %7s - ", YELLOW, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_WARNING));
+    fprintf(stderr, "%s%20s - %-40s - %-7s - ", YELLOW, logger->name, logger->fn_name, level_to_str(LOGGER_MESSAGE_LEVEL_WARNING));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
@@ -70,7 +70,7 @@ void logger_message_error(struct logger* logger, const char* msg, ...)
 {
     va_list args;
     va_start(args, msg);
-    fprintf(stderr, "%s%30s - %7s - ", RED, logger->name, level_to_str(LOGGER_MESSAGE_LEVEL_ERROR));
+    fprintf(stderr, "%s%20s - %-40s - %-7s - ", RED, logger->name, logger->fn_name, level_to_str(LOGGER_MESSAGE_LEVEL_ERROR));
     vfprintf(stderr, msg, args);
     fprintf(stderr, "%s", WHITE);
     va_end(args);
@@ -147,8 +147,9 @@ struct logger* get_logger(const char* name, const char* fn_name)
 
     if (!logger) return NULL;
 
+    logger->fn_name = fn_name;
 #ifdef INFO_FUNCTION_CALL
-    logger->info(logger, "%s() is called\n", fn_name);
+    logger->info(logger, "is called\n", fn_name);
 #endif
 
     return logger;

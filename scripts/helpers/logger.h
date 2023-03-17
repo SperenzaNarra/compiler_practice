@@ -15,6 +15,7 @@ typedef void (*LOGGER_MESSAGE_FN)(struct logger* logger, const char* msg, ...);
 struct logger
 {
     const char* name;
+    const char* fn_name;
     LOGGER_MESSAGE_FN info;
     LOGGER_MESSAGE_FN debug;
     LOGGER_MESSAGE_FN warning;
