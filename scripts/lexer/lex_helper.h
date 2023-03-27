@@ -54,7 +54,7 @@
 struct lex_process* lex_process;
 
 // lex.c
-void lex_error(struct logger* logger, struct pos pos, const char* msg, ...);
+void lex_error(struct pos pos, const char* msg, ...);
 
 void lex_new_expression();
 void lex_finish_expression();

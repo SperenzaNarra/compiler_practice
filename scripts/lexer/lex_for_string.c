@@ -29,7 +29,7 @@ struct lex_process_functions lex_for_string_functions = (struct lex_process_func
 
 struct lex_process* token_build_for_string(struct compile_process* compiler, const char* str)
 {
-    struct logger* logger = get_logger("cprocess.c", "token_build_for_string");
+    
     struct buffer* buffer = buffer_create();
     buffer_printf(buffer, str);
 

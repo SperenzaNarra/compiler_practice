@@ -13,7 +13,7 @@
 
 struct token* token_make_string(char start_delim, char end_delim)
 {
-    struct logger* logger = get_logger("lex_string.c", "token_make_string");
+    
     struct buffer* buffer = buffer_create();
     struct pos pos = *lex_process_pos();
 
@@ -27,7 +27,7 @@ struct token* token_make_string(char start_delim, char end_delim)
         if (c == EOF)
         {
             buffer_free(buffer);
-            lex_error(logger, pos, "cannot read end delimiter %s\n", display_char(end_delim));
+            lex_error(pos, "cannot read end delimiter %s\n", display_char(end_delim));
         }
 
         if (c == '\\')

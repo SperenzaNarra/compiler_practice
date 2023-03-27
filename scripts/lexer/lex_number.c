@@ -7,7 +7,7 @@
 
 static char* read_number_str()
 {
-    struct logger* logger = get_logger("lex_number", "read_number_str");
+    
     struct buffer* buffer = buffer_create();
     char c;
     LEX_GETC_IF(buffer, c, (c >= '0' && c <= '9'));
@@ -20,7 +20,7 @@ static char* read_number_str()
 
 static unsigned long long read_number()
 {
-    struct logger* logger = get_logger("lex_number", "read_number");
+    
     
     char* str = read_number_str();
     unsigned long long num = atoll(str);
@@ -46,7 +46,7 @@ int lexer_number_type(char c)
 
 struct token* token_make_number()
 {
-    struct logger* logger = get_logger("lex_number", "token_make_number");
+    
     unsigned long number = read_number();
     int number_type = lexer_number_type(peekc());
 
@@ -63,7 +63,7 @@ struct token* token_make_number()
 
 static char lex_get_escaped_char(char c)
 {
-    struct logger* logger = get_logger("lex_number", "lex_get_escaped_char");
+    
     char out;
     switch (c)
     {
@@ -82,11 +82,11 @@ static char lex_get_escaped_char(char c)
 
 struct token* token_make_quote()
 {
-    struct logger* logger = get_logger("lex_number", "token_make_quote");
+    
     struct pos pos = *lex_process_pos();
 
     char c = nextc();
-    if (c != '\'') lex_error(logger, pos, "read invalid character %c\n", c);
+    if (c != '\'') lex_error(pos, "read invalid character %c\n", c);
 
     c = nextc();
     if (c == '\\')
@@ -97,7 +97,7 @@ struct token* token_make_quote()
 
     if (nextc() != '\'')
     {
-        lex_error(logger, pos, "You opened a quote ' but did not close it with a ' character\n");
+        lex_error(pos, "You opened a quote ' but did not close it with a ' character\n");
     }
 
     return token_create(&(struct token){
@@ -137,13 +137,13 @@ static char* read_hexadecimal_str()
 
 static struct token* token_make_hexadecimal()
 {
-    struct logger* logger = get_logger("lex_number", "token_make_hexadecimal");
+    
     struct pos pos = *lex_process_pos();
     char* str = read_hexadecimal_str();
 
     if (!validate_hexadecimal_str(str))
     {
-        lex_error(logger, pos, "invalid hexdecimal value 0x%s\n", str);
+        lex_error(pos, "invalid hexdecimal value 0x%s\n", str);
     }
 
     unsigned long number = strtol(str, 0, 16);
@@ -167,13 +167,13 @@ static bool validate_binary_str(const char* str)
 
 static struct token* token_make_binary()
 {
-    struct logger* logger = get_logger("lex_number", "token_make_binary");
+    
     struct pos pos = *lex_process_pos();
     char* str = read_number_str();
 
     if (!validate_binary_str(str))
     {
-        lex_error(logger, pos, "invalid binary value 0b%s\n", str);
+        lex_error(pos, "invalid binary value 0b%s\n", str);
     }
 
     unsigned long number = strtol(str, 0, 2);
@@ -186,7 +186,7 @@ static struct token* token_make_binary()
 
 struct token* token_make_special_number()
 {
-    struct logger* logger = get_logger("lex_number", "token_make_special_number");
+    
     struct pos pos = *lex_process_pos();
 
     struct token* token = NULL;
@@ -201,7 +201,7 @@ struct token* token_make_special_number()
     // assume it is number
     if (last_token->llnum != 0x00)
     {
-        lex_error(logger, pos, "unable to read data %lldx\n", last_token->llnum);
+        lex_error(pos, "unable to read data %lldx\n", last_token->llnum);
     }
 
     lexer_pop_token();
@@ -220,7 +220,7 @@ struct token* token_make_special_number()
         token = token_make_binary();
         break;
     default:
-        lex_error(logger, pos, "invalid datatype 0%c\n", c);
+        lex_error(pos, "invalid datatype 0%c\n", c);
     }
 
     return token;

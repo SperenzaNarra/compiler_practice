@@ -39,7 +39,7 @@ struct lex_process_functions compiler_lex_functions = (struct lex_process_functi
 
 int compile_file(const char* filename, const char* out_filename, int flags)
 {
-    struct logger* logger = get_logger("compiler.c", "compile_file");
+    
 
     // build an compile process
     struct compile_process* process = compile_process_create(filename, out_filename, flags);

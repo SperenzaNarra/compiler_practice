@@ -7,18 +7,18 @@
 #include "helpers/logger.h"
 #include "helpers/vector.h"
 
-void lex_error(struct logger* logger, struct pos pos, const char* msg, ...)
+void lex_error(struct pos pos, const char* msg, ...)
 {
     char buffer[128];
-    logger->error(logger, "lexical error\n");
+    log_error("lexical error\n");
 
     va_list args;
     va_start(args, msg);
     vsprintf(buffer, msg, args);
-    logger->error(logger, "%s", buffer);
+    log_error("%s", buffer);
     va_end(args);
 
-    logger->error(logger, "on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
+    log_error("on line %d col %d in file %s\n", pos.line, pos.col, pos.filename);
     exit(-1);
 }
 
@@ -29,11 +29,11 @@ struct vector* lexer_tokens()
 
 char nextc()
 {
-    struct logger* logger = get_logger("lexer.c", "nextc");
+    
     
     char c = lex_process->next_char(lex_process);
     char* str = display_char(c);
-    logger->debug(logger, "get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
+    log_debug("get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
     free(str);
 
     lex_process->last_pos = lex_process->pos;
@@ -55,11 +55,11 @@ char nextc()
 
 char peekc()
 {
-    struct logger* logger = get_logger("lexer.c", "peekc");
+    
 
     char c = lex_process->peek_char(lex_process);
     char* str = display_char(c);
-    logger->debug(logger, "get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
+    log_debug("get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
     free(str);
 
     return c;
@@ -67,10 +67,10 @@ char peekc()
 
 void pushc(char c)
 {
-    struct logger* logger = get_logger("lexer.c", "pushc");
+    
 
     char* str = display_char(c);
-    logger->debug(logger, "get char %s\n", str);
+    log_debug("get char %s\n", str);
     free(str);
 
     if (lex_is_in_expression())
@@ -94,7 +94,7 @@ void lexer_pop_token()
 
 void lex_new_expression()
 {
-    struct logger* logger = get_logger("lexer.c", "lex_new_expression");
+    
     lex_process->current_expression_count++;
     if (lex_process->current_expression_count == 1)
     {
@@ -104,11 +104,11 @@ void lex_new_expression()
 
 void lex_finish_expression()
 {
-    struct logger* logger = get_logger("lexer.c", "lex_finish_expression");
+    
     lex_process->current_expression_count--;
     if (lex_process->current_expression_count < 0)
     {
-        lex_error(logger, lex_process->pos, "You closed an expression that you never open\n");
+        lex_error(lex_process->pos, "You closed an expression that you never open\n");
     }
 }
 
@@ -119,7 +119,7 @@ bool lex_is_in_expression()
 
 struct token* handle_whitespace()
 {
-    struct logger* logger = get_logger("lexer.c", "handle_whitespace");
+    
 
     struct token* last_token = lexer_last_token();
     if (last_token) last_token->whitespace = true;
@@ -129,7 +129,7 @@ struct token* handle_whitespace()
 
 struct token* read_special_token()
 {
-    struct logger* logger = get_logger("lexer.c", "read_special_token");
+    
     char c = peekc();
 
     if (isalpha(c) || c == '_') return token_make_identifier_or_keyword();
@@ -145,7 +145,7 @@ struct token* token_make_newline()
 
 struct token* read_next_token()
 {
-    struct logger* logger = get_logger("lexer.c", "read_next_token");
+    
 
     struct token* token = NULL;
     char c = peekc();
@@ -186,7 +186,7 @@ struct token* read_next_token()
         token = read_special_token();
         if (!token)
         {
-            lex_error(logger, lex_process->pos, "get unknown char %s\n", display_char(c));
+            lex_error(lex_process->pos, "get unknown char %s\n", display_char(c));
         }
     }
 
@@ -195,7 +195,7 @@ struct token* read_next_token()
 
 int lex(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lexer.c", "lex");
+    
 
     lex_process = process;
 

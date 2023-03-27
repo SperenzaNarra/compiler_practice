@@ -1,30 +1,25 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-enum
-{
-    LOGGER_MESSAGE_LEVEL_INFO,
-    LOGGER_MESSAGE_LEVEL_DEBUG,
-    LOGGER_MESSAGE_LEVEL_WARNING,
-    LOGGER_MESSAGE_LEVEL_ERROR
-};
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
-struct logger;
-typedef void (*LOGGER_MESSAGE_FN)(struct logger* logger, const char* msg, ...);
-
-struct logger
-{
-    const char* name;
-    const char* fn_name;
-    LOGGER_MESSAGE_FN info;
-    LOGGER_MESSAGE_FN debug;
-    LOGGER_MESSAGE_FN warning;
-    LOGGER_MESSAGE_FN error;
-};
-
-struct logger* get_logger(const char* name, const char* fn_name);
-void kill_logger(const char* name);
-void kill_all_logger();
 char* display_char(char c);
+void log_message(
+    const char* function, 
+    const char* title, 
+    const char* color,
+    const char* fmt, ...);
+
+#define log_info(fmt, ...) \
+    log_message(__FUNCTION__, "INFO", ANSI_COLOR_RESET, fmt, ##__VA_ARGS__)
+#define log_debug(fmt, ...) \
+    log_message(__FUNCTION__, "DEBUG", ANSI_COLOR_GREEN, fmt, ##__VA_ARGS__)
+#define log_warning(fmt, ...) \
+    log_message(__FUNCTION__, "WARNING", ANSI_COLOR_YELLOW, fmt, ##__VA_ARGS__)
+#define log_error(fmt, ...) \
+    log_message(__FUNCTION__, "ERROR", ANSI_COLOR_RED, fmt, ##__VA_ARGS__)
 
 #endif // LOGGER_H

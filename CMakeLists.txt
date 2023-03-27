@@ -21,8 +21,6 @@ endif()
 
 if (INFO)
     add_definitions(-DINFO)
-    add_definitions(-DINFO_FUNCTION_CALL)
-    add_definitions(-DINFO_TOKEN)
 endif()
 
 add_subdirectory(scripts)

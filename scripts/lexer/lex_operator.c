@@ -82,7 +82,7 @@ static bool op_valid(const char* op)
 static void flush_back(struct buffer* buffer, struct pos pos)
 {
     // flush back all char in buffer but first
-    struct logger* logger = get_logger("lex_operator.c", "flush_back");
+    
     const char* data = buffer_ptr(buffer);
     int len = buffer->len;
 
@@ -97,7 +97,7 @@ static void flush_back(struct buffer* buffer, struct pos pos)
 
 static const char* read_operator()
 {
-    struct logger* logger = get_logger("lex_operator.c", "read_operator");
+    
 
     bool single_operator = true;
     char op = nextc();
@@ -131,7 +131,7 @@ static const char* read_operator()
     }
     else if(!op_valid(ptr))
     {
-        lex_error(logger, pos, "The operator %s is not valid\n", ptr);
+        lex_error(pos, "The operator %s is not valid\n", ptr);
     }
     
     char* str = strdup(ptr);
@@ -141,7 +141,7 @@ static const char* read_operator()
 
 struct token* token_make_operator_or_string()
 {
-    struct logger* logger = get_logger("lex_operator.c", "token_make_operator_or_string");
+    
     char op = peekc();
     struct pos pos = *lex_process_pos();
     if (op == '<')

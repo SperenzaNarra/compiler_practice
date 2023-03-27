@@ -7,7 +7,7 @@
 
 struct token* token_make_symbol()
 {
-    struct logger* logger = get_logger("lex_symbol.c", "token_make_symbol");
+    
     struct pos pos = *lex_process_pos();
     if (peekc() == ')') lex_finish_expression();
 

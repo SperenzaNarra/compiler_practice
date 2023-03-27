@@ -5,7 +5,7 @@
 
 struct lex_process* lex_process_create(struct compile_process* compiler, struct lex_process_functions* functions, void* private)
 {
-    struct logger* logger = get_logger("lex_process.c", "lex_process_create");
+    
 
     struct lex_process* process = malloc(sizeof(struct lex_process));
     if (!process) return NULL;
@@ -59,7 +59,7 @@ struct buffer* lex_parenthesis_buffer()
 
 void lex_process_free(struct lex_process* process)
 {
-    struct logger* logger = get_logger("lex_process.c", "lex_process_free");
+    
 
     if (!process) return;
     vector_free(process->token_vec);

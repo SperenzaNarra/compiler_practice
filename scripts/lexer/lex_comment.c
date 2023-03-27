@@ -11,8 +11,6 @@
 
 struct token* token_make_one_line_comment()
 {
-    struct logger* logger = get_logger("lex_comment.c", "token_make_one_line_comment");
-
     struct buffer* buffer = buffer_create();
     struct pos pos = *lex_process_pos();
 
@@ -30,7 +28,6 @@ struct token* token_make_one_line_comment()
 
 struct token* token_make_multiline_comment()
 {
-    struct logger* logger = get_logger("lex_comment.c", "token_make_multiline_comment");
     struct pos pos = *lex_process_pos();
 
     struct buffer* buffer = buffer_create();
@@ -44,7 +41,7 @@ struct token* token_make_multiline_comment()
         );
 
         c = nextc();
-        if (c == EOF) lex_error(logger, pos, "You didn't close this multiline comment\n");
+        if (c == EOF) lex_error(pos, "You didn't close this multiline comment\n");
         
         // expecting '*'
         if (peekc() == '/')
@@ -66,8 +63,6 @@ struct token* token_make_multiline_comment()
 
 struct token* token_make_comment()
 {
-    struct logger* logger = get_logger("lex_comment.c", "token_make_comment");
-
     if (nextc() != '/') return NULL;
     char c = nextc();
     if (c == '/') return token_make_one_line_comment();

@@ -7,6 +7,12 @@
 
 #include "helpers/vector.h"
 
+enum
+{
+    NODE_FLAG_INSIDE_EXPRESSION = 0b00000001,
+
+};
+
 enum 
 {
     NODE_TYPE_EXPRESSION,
@@ -77,6 +83,7 @@ struct node
 };
 
 struct node* node_create(struct node* _node);
+struct node* node_peek_expressionable_or_null();
 void node_set_vector(struct vector* vec, struct vector* vec_root);
 void node_push(struct node* node);
 struct node* node_peek_or_null();

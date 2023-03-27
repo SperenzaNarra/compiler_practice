@@ -4,7 +4,7 @@
 
 struct compile_process* compile_process_create(const char* filename, const char* out_filename, int flags)
 {
-    struct logger* logger = get_logger("cprocess.c", "compile_process_create");
+    
 
     FILE* file = fopen(filename, "r");
     if (!file) return NULL; 
@@ -29,7 +29,7 @@ struct compile_process* compile_process_create(const char* filename, const char*
 
 void compile_process_free(struct compile_process* process)
 {
-    struct logger* logger = get_logger("cprocess.c", "compile_process_free");
+    
     
     if (!process) return;
     fclose(process->cfile.fp);

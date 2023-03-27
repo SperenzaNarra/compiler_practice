@@ -10,9 +10,9 @@
 
 struct token* token_make_identifier_or_keyword()
 {
-    struct logger* logger = get_logger("lex_identifer", "token_make_identifier_or_keyword");
+    
     struct pos pos = *lex_process_pos();
-
+ 
     struct buffer* buffer = buffer_create();
     char c;
     LEX_GETC_IF(buffer, c, 
