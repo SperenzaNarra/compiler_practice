@@ -13,10 +13,21 @@ void log_message(
     const char* color,
     const char* fmt, ...);
 
+#ifdef INFO
 #define log_info(fmt, ...) \
     log_message(__FUNCTION__, "INFO", ANSI_COLOR_RESET, fmt, ##__VA_ARGS__)
+#else
+#define log_info(fmt, ...)
+#endif
+
+#ifdef DEBUG
 #define log_debug(fmt, ...) \
     log_message(__FUNCTION__, "DEBUG", ANSI_COLOR_GREEN, fmt, ##__VA_ARGS__)
+#else
+#define log_debug(fmt, ...)
+#endif
+
+
 #define log_warning(fmt, ...) \
     log_message(__FUNCTION__, "WARNING", ANSI_COLOR_YELLOW, fmt, ##__VA_ARGS__)
 #define log_error(fmt, ...) \

@@ -41,7 +41,7 @@ struct token
     union
     {
         char cval;
-        const char* sval;
+        char* sval;
         unsigned int inum;
         unsigned long lnum;
         unsigned long long llnum;

@@ -95,7 +95,7 @@ static void flush_back(struct buffer* buffer, struct pos pos)
     lex_process_set_pos(&pos);
 }
 
-static const char* read_operator()
+static char* read_operator()
 {
     
 
