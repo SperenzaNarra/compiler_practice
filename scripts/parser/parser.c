@@ -49,7 +49,7 @@ static void parser_ignore_handler(struct token* token)
     }
 }
 
-static struct token* token_peek_next()
+struct token* token_peek_next()
 {
     
     struct token* next_token = vector_peek_no_increment(parser_current_process->token_vec);
@@ -57,7 +57,7 @@ static struct token* token_peek_next()
     return vector_peek_no_increment(parser_current_process->token_vec);
 }
 
-static struct token* token_next()
+struct token* token_next()
 {
     
     struct token* next_token = vector_peek_no_increment(parser_current_process->token_vec);
@@ -69,8 +69,6 @@ static struct token* token_next()
 
 void parse_single_token_to_node()
 {
-    
-
     struct token* token = token_next();
     struct node* node;
     
@@ -109,73 +107,13 @@ void parse_single_token_to_node()
     }
 }
 
-void parse_expression_normal(struct history* history)
-{
-    
-
-    struct token* token = token_peek_next();
-    if (token->type != TOKEN_TYPE_OPERATOR) return;
-
-    char* op = token->sval;
-    struct node* node_left = node_peek_expressionable_or_null();
-    if (!node_left) return;
-
-    // pop operator token
-    token_next();
-
-    // pop left node
-    node_pop();
-
-    node_left->flags |= NODE_FLAG_INSIDE_EXPRESSION; 
-
-
-}
-
-int parse_exp(struct history* history)
-{
-    parse_expression_normal(history);
-    return 0;
-}
-
-int parse_expressionable_single(struct history* history)
-{
-    struct token* token = token_peek_next();
-    if (!token) return -1;
-    history->flags |= NODE_FLAG_INSIDE_EXPRESSION;
-
-    int res;
-    switch (token->type)
-    {
-        case TOKEN_TYPE_NUMBER:
-            parse_single_token_to_node();
-            res = 0;
-            break;
-
-        case TOKEN_TYPE_OPERATOR:
-            res = parse_exp(history);
-            break;
-
-        default:
-            res = -1;
-            break;
-    }
-}
-
-void parse_expressionable(struct history* history)
-{
-    while(parse_expressionable_single(history) == 0)
-    {
-
-    }
-}
 
 int parse_next()
 {
-    
-
     struct token* token = token_peek_next();
     if (!token) return -1;
     log_debug("get token from address %p\n", token);
+    read_token(token);
 
     int res;
     switch (token->type)
@@ -196,8 +134,6 @@ int parse_next()
 
 int parse(struct compile_process* process)
 {
-    
-
     process->node_vec = vector_create(sizeof(struct node));
     if (!process->node_vec) return PARSE_GENERAL_ERROR;
 

@@ -8,4 +8,6 @@ struct pos
     const char* filename;
 };
 
+void read_pos(struct pos* pos);
+
 #endif //POS_H

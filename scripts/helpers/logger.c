@@ -13,7 +13,7 @@ void log_message(
 {
     va_list args;
     va_start(args, fmt);
-    fprintf(stderr, "%s[%s] %s: ", color, title, function);
+    fprintf(stderr, "%s[%-7s] %-30s ", color, title, function);
     vfprintf(stderr, fmt, args);
     fprintf(stderr, "%s", ANSI_COLOR_RESET);
     va_end(args);

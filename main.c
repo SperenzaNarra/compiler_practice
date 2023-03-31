@@ -11,15 +11,15 @@ int main(int argc, char *argv[])
     
     if (result == COMPILER_FILE_COMPILED_OK)
     {
-        log_info("Everything compiled fine\n");
+        printf("Everything compiled fine\n");
     }
     else if (result == COMPILER_FILE_FAILED_WITH_ERRORS)
     {
-        log_error("Compile failed\n");
+        printf("Compile failed\n");
     }
     else
     {
-        log_error("Unknown response code %d\n", result);
+        printf("Unknown response code %d\n", result);
     }
     return 0;
 }

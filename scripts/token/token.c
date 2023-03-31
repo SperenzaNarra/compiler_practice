@@ -10,7 +10,7 @@ bool token_is_keyword(struct token* token, const char* keyword)
     return token->type == TOKEN_TYPE_KEYWORD && (strcmp(token->sval, keyword) == 0);
 }
 
-static void read_pos(struct pos* pos)
+void read_pos(struct pos* pos)
 {
     log_debug("read pos\n");
     log_info("  col  : %d\n", pos->col);
@@ -18,9 +18,9 @@ static void read_pos(struct pos* pos)
     log_info("  filename : %s\n", pos->filename);
 }
 
-static void read_token_number(struct token* token)
+static void read_token_number(struct token_number* token_number)
 {
-    switch (token->type)
+    switch (token_number->type)
     {
     case NUMBER_TYPE_NORMAL:
         log_info("  type  : normal number\n");
@@ -36,7 +36,7 @@ static void read_token_number(struct token* token)
         break;
     default:
         log_info("  type  : unknown number\n");
-        break;
+        exit(-1);
     }
 }
 
@@ -63,7 +63,7 @@ void read_token(struct token* token)
         log_info("  value : %c\n", token->cval);
         break;
     case TOKEN_TYPE_NUMBER:
-        read_token_number(token);
+        read_token_number(&token->num);
         log_info("  value : %lld\n", token->llnum);
         break;
     case TOKEN_TYPE_STRING:
@@ -77,6 +77,9 @@ void read_token(struct token* token)
     case TOKEN_TYPE_NEWLINE:
         log_info("  type  : new line\n");
         break;
+    default:
+        log_info("  type  : unkown type\n");
+        exit(-1);
     };
     log_info("  whitespace : %s\n", token->whitespace ? "true" : "false");
     log_info("  between_brackets : %s\n", token->between_brackets);

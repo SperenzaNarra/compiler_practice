@@ -62,6 +62,13 @@ struct node_binded
 
 };
 
+struct expression
+{
+    struct node* left;
+    struct node* right;
+    const char* op;
+};
+
 struct node
 {
     int type;
@@ -79,6 +86,12 @@ struct node
         unsigned long long llnum;
         void* any;
     };
+
+    union
+    {
+        struct expression exp;
+    };
+    
     
 };
 
@@ -90,5 +103,7 @@ struct node* node_peek_or_null();
 struct node* node_peek();
 struct node* node_pop();
 struct node* node_peek();
+
+void read_node(struct node* node);
 
 #endif // NODE_H
