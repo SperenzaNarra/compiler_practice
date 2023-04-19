@@ -8,17 +8,15 @@
 
 #include "helpers/logger.h"
 
-struct compile_process* parser_current_process;
+struct compile_process* current_compiler_process;
 struct token* parser_last_token;
 
-void parse_error(struct pos pos, const char* msg, ...);
-struct token* token_peek_next();
-struct token* token_next();
+// parser.c
 void parse_single_token_to_node();
-int parse_next();
+struct token* parse_peek_token();
+struct token* parse_next_token();
 
-// parser_exp
+// parser_exp.c
 void parse_expressionable(struct history* history);
-
 
 #endif // PARSE_HELPER_H

@@ -10,11 +10,12 @@
 enum
 {
     NODE_FLAG_INSIDE_EXPRESSION = 0b00000001,
-
 };
 
 enum 
 {
+    NODE_TYPE_UNKOWN,
+
     NODE_TYPE_EXPRESSION,
     NODE_TYPE_EXPRESSION_PARENTHESES,
 
@@ -85,13 +86,8 @@ struct node
         unsigned long lnum;
         unsigned long long llnum;
         void* any;
-    };
-
-    union
-    {
         struct expression exp;
     };
-    
     
 };
 
@@ -105,5 +101,6 @@ struct node* node_pop();
 struct node* node_peek();
 
 void read_node(struct node* node);
+void read_node_simple(struct node* node);
 
 #endif // NODE_H

@@ -2,7 +2,9 @@
 
 #include "lexer.h"
 #include "parser.h"
+#include "node.h"
 
+#include "helpers/vector.h"
 #include "helpers/logger.h"
 
 
@@ -61,7 +63,12 @@ int compile_file(const char* filename, const char* out_filename, int flags)
     }
     process->token_vec = lex_process->token_vec;
 
+    log_debug("LEXICAL ANALYSIS COMPLETE\n\n");
+
     // Perform Parsing
+
+    process->node_vec = vector_create(sizeof(struct node*));
+    process->node_tree_vec = vector_create(sizeof(struct node*));
     if (parse(process) != PARSE_ALL_OK)
     {
         lex_process_free(lex_process);

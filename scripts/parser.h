@@ -12,7 +12,4 @@ enum
 // parser.c
 int parse(struct compile_process* process);
 
-// parser_exp.c
-struct node* make_exp_node(struct node* left, struct node* right, const char* op);
-
 #endif

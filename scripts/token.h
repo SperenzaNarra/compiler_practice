@@ -23,6 +23,7 @@ struct token_number
 
 enum
 {
+    TOKEN_TYPE_UNKOWN,
     TOKEN_TYPE_IDENTIFIER,
     TOKEN_TYPE_KEYWORD,
     TOKEN_TYPE_OPERATOR,
@@ -57,6 +58,8 @@ struct token
 
 struct token* token_create(struct token* _token);
 bool token_is_keyword(struct token* token, const char* keyword);
+bool token_is_symbol(struct token* token, char keyword);
+bool token_is_nl_or_comment_or_newline_separator(struct token* token);
 
 // DEBUG
 void read_token(struct token* token);

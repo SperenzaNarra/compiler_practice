@@ -7,7 +7,7 @@
 
 static char* read_number_str()
 {
-    
+    log_debug("is called\n");
     struct buffer* buffer = buffer_create();
     char c;
     LEX_GETC_IF(buffer, c, (c >= '0' && c <= '9'));
@@ -20,8 +20,7 @@ static char* read_number_str()
 
 static unsigned long long read_number()
 {
-    
-    
+    log_debug("is called\n");
     char* str = read_number_str();
     unsigned long long num = atoll(str);
     free(str);
@@ -30,6 +29,7 @@ static unsigned long long read_number()
 
 int lexer_number_type(char c)
 {
+    log_debug("is called\n");
     switch (c)
     {
     case 'l':
@@ -46,13 +46,13 @@ int lexer_number_type(char c)
 
 struct token* token_make_number()
 {
-    
+    log_debug("is called\n");
+    struct pos pos = *lex_process_pos();
     unsigned long number = read_number();
     int number_type = lexer_number_type(peekc());
 
     if (number_type != NUMBER_TYPE_NORMAL) nextc();
 
-    struct pos pos = *lex_process_pos();
     return token_create(&(struct token){
         .type = TOKEN_TYPE_NUMBER,
         .llnum = number,
@@ -63,7 +63,7 @@ struct token* token_make_number()
 
 static char lex_get_escaped_char(char c)
 {
-    
+    log_debug("is called\n");
     char out;
     switch (c)
     {
@@ -82,7 +82,7 @@ static char lex_get_escaped_char(char c)
 
 struct token* token_make_quote()
 {
-    
+    log_debug("is called\n");
     struct pos pos = *lex_process_pos();
 
     char c = nextc();
@@ -109,6 +109,7 @@ struct token* token_make_quote()
 
 static bool validate_hexadecimal_str(const char* str)
 {
+    log_debug("is called\n");
     size_t len = strlen(str);
     for (int i = 0; i < len; i++)
     {
@@ -122,6 +123,7 @@ static bool validate_hexadecimal_str(const char* str)
 
 static char* read_hexadecimal_str()
 {
+    log_debug("is called\n");
     struct buffer* buffer = buffer_create();
     char c;
     LEX_GETC_IF(buffer, c, 
@@ -137,7 +139,7 @@ static char* read_hexadecimal_str()
 
 static struct token* token_make_hexadecimal()
 {
-    
+    log_debug("is called\n");
     struct pos pos = *lex_process_pos();
     char* str = read_hexadecimal_str();
 
@@ -157,6 +159,7 @@ static struct token* token_make_hexadecimal()
 
 static bool validate_binary_str(const char* str)
 {
+    log_debug("is called\n");
     size_t len = strlen(str);
     for (int i = 0; i < len; i++)
     {
@@ -167,7 +170,7 @@ static bool validate_binary_str(const char* str)
 
 static struct token* token_make_binary()
 {
-    
+    log_debug("is called\n");
     struct pos pos = *lex_process_pos();
     char* str = read_number_str();
 
@@ -186,7 +189,7 @@ static struct token* token_make_binary()
 
 struct token* token_make_special_number()
 {
-    
+    log_debug("is called\n");
     struct pos pos = *lex_process_pos();
 
     struct token* token = NULL;

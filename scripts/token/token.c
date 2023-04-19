@@ -10,6 +10,19 @@ bool token_is_keyword(struct token* token, const char* keyword)
     return token->type == TOKEN_TYPE_KEYWORD && (strcmp(token->sval, keyword) == 0);
 }
 
+bool token_is_symbol(struct token* token, char keyword)
+{
+    return token->type == TOKEN_TYPE_SYMBOL && token->cval == keyword;
+}
+
+bool token_is_nl_or_comment_or_newline_separator(struct token* token)
+{
+    return 
+        token->type == TOKEN_TYPE_NEWLINE ||
+        token->type == TOKEN_TYPE_COMMENT ||
+        token_is_symbol(token, '\\');
+}
+
 void read_pos(struct pos* pos)
 {
     log_debug("read pos\n");

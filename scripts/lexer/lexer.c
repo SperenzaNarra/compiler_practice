@@ -29,8 +29,6 @@ struct vector* lexer_tokens()
 
 char nextc()
 {
-    
-    
     char c = lex_process->next_char(lex_process);
     char* str = display_char(c);
     log_debug("get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
@@ -38,6 +36,7 @@ char nextc()
 
     lex_process->last_pos = lex_process->pos;
     lex_process->pos.col += 1;
+    
 
     if (c == '\n')
     {
@@ -49,14 +48,14 @@ char nextc()
     {
         buffer_write(lex_process->parenthesis_buffer, c);
     }
+    
+    
 
     return c;
 }
 
 char peekc()
 {
-    
-
     char c = lex_process->peek_char(lex_process);
     char* str = display_char(c);
     log_debug("get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
@@ -67,12 +66,6 @@ char peekc()
 
 void pushc(char c)
 {
-    
-
-    char* str = display_char(c);
-    log_debug("get char %s\n", str);
-    free(str);
-
     if (lex_is_in_expression())
     {
         struct buffer* buffer = lex_process->parenthesis_buffer;
@@ -84,17 +77,21 @@ void pushc(char c)
     }
     lex_process->push_char(lex_process, c);
     lex_process->pos = lex_process->last_pos;
+    char* str = display_char(c);
+    log_debug("get char %s (line %d col %d)\n", str, lex_process->pos.line, lex_process->pos.col);
+    free(str);
 }
 
 
 void lexer_pop_token()
 {
+    log_debug("is called\n");
     vector_pop(lex_process->token_vec);
 }
 
 void lex_new_expression()
 {
-    
+    log_debug("is called\n");
     lex_process->current_expression_count++;
     if (lex_process->current_expression_count == 1)
     {
@@ -104,7 +101,7 @@ void lex_new_expression()
 
 void lex_finish_expression()
 {
-    
+    log_debug("is called\n");
     lex_process->current_expression_count--;
     if (lex_process->current_expression_count < 0)
     {
@@ -119,8 +116,7 @@ bool lex_is_in_expression()
 
 struct token* handle_whitespace()
 {
-    
-
+    log_debug("is called\n");
     struct token* last_token = lexer_last_token();
     if (last_token) last_token->whitespace = true;
     nextc();
@@ -129,7 +125,7 @@ struct token* handle_whitespace()
 
 struct token* read_special_token()
 {
-    
+    log_debug("is called\n");
     char c = peekc();
 
     if (isalpha(c) || c == '_') return token_make_identifier_or_keyword();
@@ -138,6 +134,7 @@ struct token* read_special_token()
 
 struct token* token_make_newline()
 {
+    log_debug("is called\n");
     struct pos pos = *lex_process_pos();
     nextc();
     return token_create(&(struct token){.type=TOKEN_TYPE_NEWLINE, .pos=pos});
@@ -145,8 +142,7 @@ struct token* token_make_newline()
 
 struct token* read_next_token()
 {
-    
-
+    log_debug("is called\n");
     struct token* token = NULL;
     char c = peekc();
     switch (c)
@@ -195,8 +191,7 @@ struct token* read_next_token()
 
 int lex(struct lex_process* process)
 {
-    
-
+    log_debug("is called\n");
     lex_process = process;
 
     struct token* token = read_next_token();
@@ -205,6 +200,18 @@ int lex(struct lex_process* process)
         vector_push(process->token_vec, token);
         token = read_next_token();
     }
+
+    // check correction
+    log_info("\n");
+    log_info("lexical analysis complete, reading token vector\n");
+    log_info("\n");
+    token = vector_peek(lex_process->token_vec);
+    while (token)
+    {
+        read_token(token);    
+        token = vector_peek(lex_process->token_vec);
+    }
+    vector_set_peek_pointer(lex_process->token_vec, 0);
 
     return LEXICAL_ANALYSIS_ALL_OK;
 }
